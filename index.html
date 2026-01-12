@@ -1,0 +1,4143 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <!-- Favicon -->
+    <link rel="icon" href="img/portadas/logo aranduka.jpeg" type="image/jpeg" />
+
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons & Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.5.5/css/simple-line-icons.min.css">
+
+    <!-- EduVerse Fonts and CSS -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Montserrat+Alternates:wght@400;700&family=Outfit:wght@300;700&family=Lora:ital,wght@0,400;1,400&family=EB+Garamond:wght@400;600&family=Roboto+Mono:wght@400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/eduverse.css">
+
+    <title>Aranduka - Editorial y Biblioteca Virtual</title>
+
+    <style>
+        :root {
+            /* BRAND COLORS (Unified with Admin) */
+            --primary-color: #0c647c;
+            /* Deep Teal */
+            --primary-light: #e0f2f1;
+            --primary-dark: #084c61;
+            --secondary-color: #f1f5f9;
+            /* Clean Slate */
+            --accent-color: #f59e0b;
+            /* Gold/Amber for highlights */
+
+            /* NEUTRALS */
+            --charcoal: #1e293b;
+            --slate-grey: #64748b;
+            --white: #ffffff;
+            --off-white: #f8fafc;
+
+            /* SHADOWS & DEPTH */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-color: rgba(12, 100, 124, 0.15);
+            /* Tinted Shadow */
+
+            --radius: 16px;
+            --font-main: 'Plus Jakarta Sans', 'Inter', sans-serif;
+            --font-display: 'Playfair Display', serif;
+        }
+
+        /* Fix for dark backdrop issue - IMPORTANT */
+        .modal-backdrop {
+            z-index: 1040 !important;
+        }
+
+        .modal {
+            z-index: 1050 !important;
+        }
+
+        /* Ensure sweetalert is on top */
+        .swal2-container {
+            z-index: 1060 !important;
+        }
+
+        /* Scroll Animations */
+        /* Scroll Animations */
+        .book-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 1rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            opacity: 0;
+            transform: translateY(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(12, 100, 124, 0.2);
+        }
+
+        .book-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Header Styles --- */
+        .main-header {
+            background: #FFFFFF !important;
+            padding: 0;
+            position: relative;
+            top: 0;
+            width: 100%;
+            z-index: 2000;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(to right, var(--py-red) 33%, #FFFFFF 33%, #FFFFFF 66%, var(--py-blue) 66%) 1;
+            /* transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1); REMOVED */
+        }
+
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            height: 200px;
+        }
+
+        .logo a {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo img {
+            height: 180px;
+            width: auto;
+            transition: transform 0.3s;
+            object-fit: contain;
+            margin-top: 0;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 2rem;
+            position: relative;
+            max-width: 500px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 1rem 1.8rem;
+            padding-right: 80px;
+            border: 2px solid #e1e1e1;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s;
+            background: #fdfdfd;
+            font-size: 1.1rem;
+        }
+
+        .search-bar input:focus {
+            border-color: var(--py-red);
+            box-shadow: 0 0 0 4px rgba(213, 43, 30, 0.1);
+        }
+
+        .search-bar button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        #voiceSearchBtn {
+            right: 45px;
+            color: #888;
+        }
+
+        .search-bar button[type="submit"] {
+            right: 15px;
+            color: var(--primary-color);
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+
+        .main-nav a {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+            text-decoration: none;
+            padding: 0.5rem 0.5rem;
+            position: relative;
+        }
+
+        .main-nav a:hover {
+            color: #4A7C8C;
+        }
+
+        .main-nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #4A7C8C;
+            border-radius: 2px;
+        }
+
+        .btn-login-nav {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(12, 100, 124, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-login-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(12, 100, 124, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .btn-admin-nav {
+            background: linear-gradient(135deg, var(--py-red) 0%, #d9251b 100%);
+            color: white !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(213, 43, 30, 0.3);
+            text-decoration: none !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-admin-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(213, 43, 30, 0.5);
+            background: linear-gradient(135deg, #e63025 0%, #b2241a 100%);
+        }
+
+        .btn-share-nav {
+            background: linear-gradient(135deg, var(--py-blue) 0%, #002e8a 100%);
+            color: white !important;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+            box-shadow: 0 4px 12px rgba(0, 56, 168, 0.3);
+            text-decoration: none !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-share-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(0, 56, 168, 0.5);
+            background: linear-gradient(135deg, #0047cc 0%, #002e8a 100%);
+        }
+
+        #materiales-section {
+            padding-top: 80px;
+            scroll-margin-top: 170px;
+        }
+
+        /* --- Premium Hero Section --- */
+        .hero {
+            background-color: #1e293b;
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            min-height: 60vh;
+            padding: 10rem 2rem 6rem;
+            position: relative;
+            background-image:
+                linear-gradient(180deg, rgba(15, 23, 42, 0.7) 0%, rgba(12, 100, 124, 0.2) 100%),
+                url('img/portadas/library-hero.jpg');
+            /* Graceful fallback or generic */
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -10%;
+            right: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 10s infinite alternate ease-in-out;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -10%;
+            left: -5%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 15s infinite alternate-reverse ease-in-out;
+        }
+
+        @keyframes float {
+            from {
+                transform: translate(0, 0) scale(1);
+            }
+
+            to {
+                transform: translate(30px, 40px) scale(1.1);
+            }
+        }
+
+        /* --- CORRECCIÓN DEL CONTENEDOR DEL CARRUSEL --- */
+
+        /* 1. Quitamos el borde de líneas y el flex que rompía el layout */
+        #heroCarouselInner {
+            min-height: 450px;
+            border: none;
+            /* Adiós al borde de líneas discontinuas */
+            /* Quitamos display: flex de aquí para que Bootstrap controle el slide */
+            display: block;
+            width: 100%;
+        }
+
+        /* 2. Centramos el contenido DENTRO de cada item individual */
+        .carousel-item {
+            height: 450px;
+            /* Altura fija para evitar saltos */
+            transition: transform 0.6s ease-in-out;
+        }
+
+        /* Esta clase ayuda a centrar todo vertical y horizontalmente */
+        .carousel-item-content {
+            height: 100%;
+            width: 100%;
+            display: flex !important;
+            flex-direction: column;
+            align-items: center;
+            /* Centrado Horizontal */
+            justify-content: center;
+            /* Centrado Vertical */
+            padding-bottom: 2rem;
+        }
+
+        /* 3. Ajustamos la imagen para que no se corte */
+        .hero-book-wrapper {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 1rem;
+            perspective: 1000px;
+            /* Para el efecto 3D */
+        }
+
+        .hero-book-wrapper img {
+            max-height: 80px;
+            width: auto;
+            max-width: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            transform: rotateY(-10deg);
+            transition: transform 0.3s ease;
+        }
+
+        /* Texto debajo del libro */
+        .hero-book-caption {
+            text-align: center;
+            color: white;
+            z-index: 20;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero .left {
+            flex: 1;
+
+            padding-right: 3rem;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .hero h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #026c75;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .hero .btn-hero {
+            background: linear-gradient(135deg, #4A7C8C 0%, #3A6270 100%);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: 0.3s;
+            display: inline-block;
+            box-shadow: 0 10px 25px rgba(74, 124, 140, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .hero .btn-hero:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(74, 124, 140, 0.4);
+            background: linear-gradient(135deg, #6BA3B8 0%, #4A7C8C 100%);
+            text-decoration: none;
+        }
+
+        .grade-card-trigger {
+            cursor: pointer;
+            border-bottom: 5px solid var(--primary-color) !important;
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .grade-card-trigger .icon-box {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            background: rgba(12, 100, 124, 0.05);
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            margin: 0 auto 1.2rem;
+            transition: 0.3s;
+        }
+
+        .grade-card-trigger:hover .icon-box {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .hover-up {
+            transition: 0.3s;
+        }
+
+        .hover-up:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .hero .right {
+            flex: 0.8;
+            text-align: center;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #heroCarousel {
+            width: 100%;
+            max-width: 480px;
+        }
+
+
+
+        /* --- Advantages Row --- */
+        .advantages {
+            background-color: var(--white);
+            padding: 8rem 2rem;
+            text-align: center;
+        }
+
+        .advantages .cards {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .advantages .card-adv {
+            flex: 1;
+            min-width: 250px;
+            margin: 1rem;
+            padding: 3rem 2rem;
+            border-radius: 15px;
+            background: var(--white);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: 0.3s;
+            border: 1px solid #f1f3f5;
+        }
+
+        .advantages .card-adv:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .advantages .card-adv i {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .advantages .card-adv h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--charcoal);
+        }
+
+        .advantages .card-adv p {
+            color: var(--text-light);
+        }
+
+        /* --- Mission Section --- */
+        .mission {
+            display: flex;
+            align-items: center;
+            padding: 6rem 10%;
+            background-color: var(--ivory);
+            gap: 4rem;
+        }
+
+        .mission .left {
+            flex: 1.2;
+        }
+
+        .mission .left h2 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 2rem;
+        }
+
+        .mission .left p {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #444;
+        }
+
+        .mission .right {
+            flex: 1;
+            text-align: center;
+        }
+
+        .mission .right img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow-md);
+        }
+
+        /* --- Dashboard / Structural Architecture --- */
+        .dashboard-container {
+            padding: 0;
+            background: #ffffff;
+            max-width: 1400px;
+            margin: 0 auto;
+            border-radius: 40px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.06);
+            position: relative;
+            z-index: 5;
+            margin-top: -20px;
+            overflow: hidden;
+            border: 1px solid #f0f2f5;
+        }
+
+        /* DUPLICATE REMOVED to fix static header
+        .main-header {
+            background-color: #fff;
+            padding: 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 2000;
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        } */
+
+        /* Mobile Header Fix for Border Visibility */
+        .main-header.header-hidden {
+            transform: translateY(-80%);
+            /* Fix: Deja visible el borde inferior (bandera) */
+            box-shadow: none;
+        }
+
+        /* Institutional Header Style in Dashboard */
+        .dashboard-header-bg {
+            background: #ffffff;
+            padding: 2rem 2rem 1.5rem;
+            text-align: center;
+            /* Border removed */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Abstract Background Decoration for Header */
+        /* Abstract Background Decoration for Header - REMOVED for clean look */
+        .dashboard-header-bg::after {
+            display: none;
+        }
+
+
+        .dashboard-main-area {
+            padding: 2rem 2rem 4rem;
+            background-image: radial-gradient(#0c647c0f 1.5px, transparent 1.5px);
+            background-size: 30px 30px;
+            background-color: #ffffff;
+        }
+
+        .section-header h2 {
+            font-size: 3.5rem;
+            background: linear-gradient(135deg, #4A7C8C 0%, #6BA3B8 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .section-header .lead {
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+
+        /* Tabs - App Style Model */
+        .dashboard-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            padding: 1rem;
+            /* Sticky preparation */
+            margin-left: -2rem;
+            margin-right: -2rem;
+            width: calc(100% + 4rem);
+        }
+
+        .tab-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 150px;
+            /* Slightly wider */
+            height: 130px;
+            /* Slightly taller */
+            padding: 1.5rem;
+            border: 1px solid #f1f5f9;
+            /* Subtle border */
+            background: var(--white);
+            border-radius: 20px;
+            /* Slightly less rounded */
+            font-weight: 600;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            /* Tailwind-like shadow */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tab-btn i {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+            transition: 0.3s;
+            background: rgba(12, 100, 124, 0.1);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #4A7C8C 0%, #3A6270 100%);
+            color: white;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(74, 124, 140, 0.3), 0 10px 10px -5px rgba(74, 124, 140, 0.2);
+            border-color: #4A7C8C;
+        }
+
+        .tab-btn.active i {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .tab-btn:hover:not(.active) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        .tab-btn:hover i {
+            transform: scale(1.05);
+            background: rgba(12, 100, 124, 0.15);
+        }
+
+        .filter-section {
+            display: none;
+        }
+
+        .filter-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+
+
+        /* Mobile Optimization for Filter Cards */
+        @media (max-width: 768px) {
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.5rem;
+                margin-bottom: 2rem;
+            }
+
+
+            .filter-card {
+                padding: 1.5rem 1rem;
+                min-height: 140px;
+            }
+
+            .filter-card i {
+                font-size: 2rem;
+                width: 60px;
+                height: 60px;
+                margin-bottom: 1rem;
+            }
+
+            .filter-card span {
+                font-size: 0.95rem;
+                line-height: 1.2;
+            }
+        }
+
+        .filter-card {
+            background: #f8fafc;
+            padding: 2rem 1rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid rgba(12, 100, 124, 0.15);
+            /* Primary Tint */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--charcoal);
+            box-shadow: 0 4px 15px rgba(12, 100, 124, 0.05);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            height: 100%;
+            min-height: 180px;
+            /* Ensure uniform height perception */
+        }
+
+        .filter-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(12, 100, 124, 0.2);
+            border-color: var(--primary-color);
+            background: #ffffff;
+        }
+
+        .filter-card i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            background: rgba(12, 100, 124, 0.08);
+            /* Icon container bg */
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            /* Soft square similar to reference */
+            transition: 0.3s;
+        }
+
+        .filter-card:hover i {
+            background: var(--primary-color);
+            color: white;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .filter-card span {
+            font-weight: 700;
+            font-size: 1rem;
+            line-height: 1.3;
+        }
+
+        /* --- TIMELINE AI WIZARD (NEW) --- */
+        .timeline-container {
+            position: relative;
+            padding: 10px 10px 10px 0;
+        }
+
+        /* Línea Vertical Conectora */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 24px;
+            /* Centrado con el icono de 50px */
+            top: 20px;
+            bottom: 40px;
+            width: 3px;
+            background: linear-gradient(to bottom, #4A7C8C 0%, #e0f2f1 100%);
+            z-index: 0;
+            border-radius: 3px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 35px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: slideInUp 0.5s forwards;
+        }
+
+        .timeline-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .timeline-item:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .timeline-item:nth-child(3) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes slideInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .timeline-icon-box {
+            width: 54px;
+            height: 54px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 12px rgba(74, 124, 140, 0.2);
+            border: 3px solid #e1f5fe;
+            flex-shrink: 0;
+            color: #4A7C8C;
+            font-size: 1.3rem;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            /* Glassmorphism support */
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 10px 30px rgba(31, 38, 135, 0.08);
+            /* Sombra elegante */
+            transition: transform 0.3s;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(31, 38, 135, 0.12);
+        }
+
+        .timeline-step-title {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .prompt-code-box {
+            background: #1e1e1e;
+            /* Dark theme for code */
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 12px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            border-left: 4px solid #e91e63;
+            max-height: 150px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+
+        .btn-action-premium {
+            background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+            /* WhatsApp/Gamma Green-ish style */
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-decoration: none !important;
+        }
+
+        .btn-action-premium:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+            color: white;
+        }
+
+        .btn-action-outline {
+            background: white;
+            color: #4A7C8C;
+            border: 2px solid #e1f5fe;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .btn-action-outline:hover {
+            border-color: #4A7C8C;
+            background: #f1f9fc;
+            color: #3A6270;
+        }
+
+        .filter-card::after {
+            content: '';
+            position: absolute;
+            bottom: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: var(--primary-color);
+            opacity: 0.02;
+            border-radius: 50%;
+            transition: 0.5s;
+        }
+
+        .filter-card:hover {
+            transform: translateY(-8px);
+            border-color: #4A7C8C;
+            box-shadow: 0 15px 35px rgba(74, 124, 140, 0.25);
+            text-decoration: none;
+            color: #4A7C8C;
+        }
+
+        .filter-card:hover i {
+            background: linear-gradient(135deg, #4A7C8C 0%, #6BA3B8 100%);
+            color: #fff;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .filter-card:hover::after {
+            transform: scale(3);
+        }
+
+
+
+        .filter-card i {
+            font-size: 2.8rem;
+            margin-bottom: 1.2rem;
+            color: var(--primary-color);
+            background: linear-gradient(135deg, rgba(12, 100, 124, 0.08) 0%, rgba(12, 100, 124, 0.02) 100%);
+            width: 75px;
+            height: 75px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            transition: all 0.4s;
+            flex-shrink: 0;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.04);
+        }
+
+        /* Prevent conflicts when using icon-box wrapper */
+        .grade-card-trigger .icon-box i {
+            width: auto;
+            height: auto;
+            background: none;
+            margin-bottom: 0;
+            font-size: inherit;
+        }
+
+        .filter-card:hover i {
+            background: var(--primary-color);
+            color: white;
+            transform: rotate(10deg);
+        }
+
+        .filter-card span {
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: block;
+        }
+
+        /* Book Cards - Premium Makeover */
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 3rem;
+            padding: 2rem 0;
+        }
+
+        .book-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .book-card:hover {
+            transform: translateY(-20px) scale(1.02);
+            box-shadow: 0 40px 80px rgba(12, 100, 124, 0.2);
+            border-color: var(--primary-color);
+        }
+
+        .book-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(135deg, transparent 0%, rgba(12, 100, 124, 0.02) 100%);
+            z-index: 0;
+        }
+
+        .book-cover {
+            height: 380px;
+            background: #eee;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            background: radial-gradient(circle at center, #ffffff 0%, #e0e0e0 100%);
+        }
+
+        /* The Subtle 3D Book Look */
+        .book-cover img {
+            height: 100%;
+            width: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            z-index: 2;
+            padding: 10px;
+        }
+
+        /* Shine Effect */
+        .book-cover::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.1) 50%, rgba(255, 255, 255, 0) 100%);
+            transform: rotate(30deg);
+            transition: 0.8s;
+            z-index: 3;
+            pointer-events: none;
+        }
+
+        .book-card:hover .book-cover::after {
+            left: 100%;
+            top: 100%;
+        }
+
+
+
+        .book-card:hover .book-cover img {
+            transform: rotateY(-15deg) scale(1.1);
+            box-shadow: 20px 30px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .book-status-badge {
+            position: absolute;
+            bottom: 25px;
+            right: 25px;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.6rem 1.4rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 850;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            z-index: 10;
+            box-shadow: 0 8px 20px rgba(12, 100, 124, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: 0.3s;
+        }
+
+        .book-info {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .book-info h4 {
+            font-size: 1.4rem;
+            font-weight: 850;
+            margin-bottom: 0.8rem;
+            color: var(--charcoal);
+            line-height: 1.2;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .book-info p {
+            font-size: 0.9rem;
+            color: var(--slate-grey);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .book-info .btn {
+            border-radius: 50px;
+            padding: 0.6rem 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            transition: 0.3s;
+        }
+
+        .book-card:hover .btn-outline-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .book-status-badge {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(12, 100, 124, 0.3);
+        }
+
+
+
+        /* 2. Congelar página principal */
+        body.modal-open-freeze {
+            overflow: hidden !important;
+            height: 100vh !important;
+            position: fixed;
+            width: 100%;
+        }
+
+        /* Footer */
+        .main-footer {
+            background: var(--charcoal);
+            color: #ccc;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .main-footer h4 {
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 2rem;
+            margin: 0 1rem;
+            transition: 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #0ee0f3;
+        }
+
+        /* 1. Fondo con desenfoque y oscurecimiento */
+
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0);
+            backdrop-filter: blur(0px);
+            -webkit-backdrop-filter: blur(0px);
+            z-index: 3000;
+            /* Fix: Bumped Z-Index above header */
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Desktop: Center */
+        }
+
+        .modal-overlay.active {
+            visibility: visible !important;
+            opacity: 1 !important;
+            backdrop-filter: blur(15px) brightness(0.8) !important;
+            -webkit-backdrop-filter: blur(15px) brightness(0.8) !important;
+            background: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        .modal-content-custom {
+            background: #ffffff;
+            border-radius: 30px;
+            width: 95%;
+            max-width: 1200px;
+            /* Much wider for desktop */
+            padding: 0;
+            position: relative;
+            transform: scale(0.9);
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-content-custom .row {
+            margin: 0;
+            display: flex;
+            flex-direction: row;
+            /* Desktop: Horizontal */
+            height: 100%;
+        }
+
+        .modal-col-image {
+            background: #f8f9fa;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-right: 1px solid #eee;
+        }
+
+        .modal-col-info {
+            padding: 3rem;
+            overflow-y: auto;
+        }
+
+        .modal-file-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-left: 8px;
+            vertical-align: middle;
+            text-transform: uppercase;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: 0.2s;
+            color: #D52B1E;
+            /* Force Red Default */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .close-modal:hover {
+            transform: scale(1.1);
+            /* Subtle scale only */
+            color: #D52B1E !important;
+        }
+
+        /* Book Grid Layout */
+        #books-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 2rem;
+            padding: 1rem 0;
+            width: 100%;
+        }
+
+        .modal-book-wrapper:hover img {
+            transform: rotateY(0deg) scale(1.05) !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 991px) {
+            .hero {
+                flex-direction: column;
+                padding: 4rem 1rem;
+                text-align: center;
+            }
+
+            .hero .left {
+                padding-right: 0;
+                margin-bottom: 2rem;
+            }
+
+            .hero .right img {
+                max-width: 80%;
+                margin: 0 auto;
+                display: block;
+            }
+
+            #heroCarousel {
+                margin: 0 auto;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .search-bar {
+                width: 100%;
+                max-width: 100%;
+            }
+
+            #filters-container {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 10px;
+                justify-content: flex-start;
+            }
+
+            /* Responsive Nav for Mobile */
+            .main-nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.8rem;
+            }
+
+            .header-container {
+                padding: 0 0.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .section-header h2 {
+                font-size: 1.8rem;
+            }
+
+            /* Admin Panel Mobile: Sidebar becomes Top Scrollable Nav */
+            #adminDashboardModal .modal-body {
+                flex-direction: column;
+            }
+
+            #adminDashboardModal .bg-light.border-right {
+                width: 100% !important;
+                border-right: none !important;
+                border-bottom: 1px solid #ddd;
+                overflow-x: auto;
+            }
+
+            #adminDashboardModal #adminTabs {
+                flex-direction: row;
+                width: max-content;
+            }
+
+            #adminDashboardModal .nav-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+
+            /* Login Modal Mobile */
+            .modal-body.p-5 {
+                padding: 2rem !important;
+            }
+
+            /* Book Card Mobile */
+            .book-card {
+                margin-bottom: 2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .hero {
+                padding: 6rem 1rem 3rem;
+            }
+
+            .hero h1 {
+                font-size: 1.8rem;
+                line-height: 1.2;
+                margin-bottom: 15px;
+            }
+
+            .hero .right img {
+                max-width: 60%;
+            }
+
+            /* 2 Column Mobile and Compressed Cards */
+            .books-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+                padding: 0 !important;
+            }
+
+            .book-card {
+                margin: 0 0 1rem 0;
+                max-width: none;
+                border-radius: 12px;
+            }
+
+            .book-cover {
+                height: 160px;
+                border-radius: 12px 12px 0 0;
+            }
+
+            .book-info {
+                padding: 1rem;
+            }
+
+            .book-info h4 {
+                font-size: 0.9rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .book-info p {
+                font-size: 0.75rem;
+                margin-bottom: 0.8rem;
+            }
+
+            /* Compact Buttons */
+            .book-actions .btn {
+                width: 100%;
+                margin-bottom: 0.4rem;
+                display: flex;
+                padding: 0.4rem;
+                font-size: 0.75rem;
+                border-radius: 8px;
+            }
+
+            /* Dashboard Padding - Maximize width for books */
+            .dashboard-main-area {
+                padding: 3rem 0.5rem 5rem;
+            }
+
+            .dashboard-header-bg {
+                padding: 5rem 1rem 2rem;
+            }
+
+            /* Advantages: 2 Columns Compact */
+            .advantages {
+                padding: 4rem 1rem;
+            }
+
+            .advantages .cards {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+
+            .advantages .card-adv {
+                margin: 0;
+                min-width: 0;
+                padding: 1.5rem 1rem;
+            }
+
+            .advantages .card-adv i {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .advantages .card-adv h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .advantages .card-adv p {
+                font-size: 0.8rem;
+                display: none;
+                /* Text too long for compact mode, hide or truncate */
+            }
+
+            /* Mission Chic Mobile */
+            .mission {
+                flex-direction: column-reverse;
+                /* Image on top? User said "put image with sense" */
+                padding: 4rem 1rem;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .mission .right img {
+                border-radius: 20px 20px 0 20px;
+                /* Chic asymmetrical */
+                box-shadow: 10px 10px 0 var(--primary-color);
+                transform: scale(0.95);
+            }
+
+            .mission .left {
+                padding: 0 1rem;
+            }
+
+            .mission .left h2 {
+                font-size: 2rem;
+            }
+
+            /* Prevent iOS Zoom on inputs */
+            input,
+            select,
+            textarea {
+                font-size: 16px !important;
+            }
+
+            .book-actions .btn {
+                width: 100%;
+                margin-bottom: 0.5rem;
+                display: block;
+            }
+
+            /* Hide non-essential decoration on tiny screens */
+            .ao-poi-border-left,
+            .ao-poi-border-right {
+                width: 10px;
+            }
+
+        }
+
+        /* --- SOLUCIÓN DEFINITIVA ANTI-GRAVITY PRO+ --- */
+
+        /* Back to Top Button (Global) */
+        .btn-back-to-top {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 4px 15px rgba(12, 100, 124, 0.4);
+            z-index: 9999;
+            /* Ensure it's on top of everything */
+            cursor: pointer;
+            transition: 0.3s;
+            border: none;
+            opacity: 0.8;
+        }
+
+        .btn-back-to-top:hover {
+            transform: translateY(-5px);
+            background: var(--primary-color);
+            opacity: 1;
+        }
+
+        .btn-back-to-top.show {
+            display: flex;
+        }
+
+        @media (max-width: 768px) {
+            .modal-overlay.active {
+                align-items: flex-end !important;
+                /* Mobile: Slide-Up from bottom */
+            }
+
+            /* 3. Forzar estructura vertical (Corrige el error horizontal) */
+            .modal-content-custom {
+                width: 100vw !important;
+                height: 100dvh !important;
+                border-radius: 25px 25px 0 0 !important;
+                background: #ffffff !important;
+                display: flex !important;
+                flex-direction: column !important;
+                /* Fuerza el orden vertical */
+                overflow: hidden !important;
+                animation: slideUp 0.5s cubic-bezier(0.25, 1, 0.5, 1) !important;
+                border: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                max-width: 100% !important;
+            }
+
+            @keyframes slideUp {
+                from {
+                    transform: translateY(100%);
+                }
+
+                to {
+                    transform: translateY(0);
+                }
+            }
+
+            /* Contenedor de scroll interno: Obliga a apilar elementos */
+            .modal-content-custom .row {
+                margin: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                /* IMAGEN ARRIBA, TEXTO ABAJO */
+                overflow-y: auto !important;
+                height: 100% !important;
+                flex-wrap: nowrap !important;
+                width: 100% !important;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* 4. Sección de Imagen: Centrada y con "Sentido" */
+            .modal-content-custom .col-md-6:first-child,
+            .modal-col-image {
+                background: #ffffff !important;
+                /* Clean White as per reference */
+                padding: 3rem 1rem 2rem 1rem !important;
+                /* Match right col padding for alignment */
+                width: 100% !important;
+                /* Ocupa todo el ancho en móvil */
+                display: flex !important;
+                justify-content: center !important;
+                align-items: flex-start !important;
+                /* Move image to top */
+                flex: 0 0 auto !important;
+                position: relative !important;
+                min-height: 40vh !important;
+                padding-top: 3rem !important;
+                /* Adjust top padding */
+            }
+
+            .modal-book-wrapper {
+                width: 300px !important;
+                /* Larger image on desktop */
+                margin: 0 auto !important;
+                filter: none !important;
+            }
+
+            .modal-book-wrapper img {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 300px !important;
+                object-fit: contain !important;
+                border-radius: 12px !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+                transform: none !important;
+            }
+
+            /* 5. Sección de Información: Diseño con Colores Vivos */
+            .modal-content-custom .col-md-6:last-child,
+            .modal-col-info {
+                padding: 3rem 3rem 3rem 1rem !important;
+                width: 100% !important;
+                text-align: left !important;
+                /* Left align for desktop */
+                flex: 0 0 auto !important;
+                background: white !important;
+                margin-top: 0 !important;
+                border-radius: 0 !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+            }
+
+            #modalBookBadge {
+                background: #007bff !important;
+                /* Blue like reference */
+                color: white !important;
+                padding: 5px 15px !important;
+                border-radius: 50px !important;
+                font-weight: 700 !important;
+                display: inline-block !important;
+                margin: 0 !important;
+                font-size: 0.75rem !important;
+                letter-spacing: 1px !important;
+                box-shadow: none !important;
+                align-self: flex-start;
+            }
+
+            #modalBookTitle {
+                font-family: 'Playfair Display', serif !important;
+                font-size: 2.5rem !important;
+                color: #212529 !important;
+                /* Darker title text */
+                line-height: 1.2 !important;
+                margin-top: 10px !important;
+                font-weight: 700 !important;
+                text-align: left !important;
+            }
+
+            #modalBookCategory {
+                color: #007bff !important;
+                /* Blue category */
+                font-weight: 600 !important;
+                letter-spacing: 2px !important;
+                text-transform: uppercase !important;
+                font-size: 0.85rem !important;
+                display: block !important;
+                margin-bottom: 20px !important;
+                text-align: left !important;
+            }
+
+            /* Divider Line Desktop */
+            .modal-divider-desktop {
+                width: 50px;
+                height: 2px;
+                background-color: #dee2e6;
+                margin-bottom: 20px;
+                display: block;
+            }
+
+
+
+            /* 6. Botón de Descarga Premium con efecto de pulso opcional */
+            #modalDownloadBtn {
+                background: #007bff !important;
+                /* Solid Blue */
+                color: white !important;
+                border: none !important;
+                padding: 1rem !important;
+                border-radius: 50px !important;
+                /* Pill shape */
+                font-weight: 600 !important;
+                box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3) !important;
+                width: 100% !important;
+                display: block !important;
+                margin-top: auto !important;
+                /* Push to bottom if flex container allows */
+                text-transform: none !important;
+                /* Normal case as per image usually, but image says 'Descargar Material' title case */
+                font-size: 1rem !important;
+            }
+
+            #modalDownloadBtn i {
+                margin-right: 8px;
+            }
+
+            /* 7. Botón X (Cierre) Flotante */
+            .close-modal {
+                position: fixed !important;
+                top: 20px !important;
+                right: 20px !important;
+                background: rgba(255, 255, 255, 0.9) !important;
+                width: 46px !important;
+                height: 46px !important;
+                border-radius: 50% !important;
+                color: #D52B1E !important;
+                /* RED CLOSE BUTTON as requested */
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2) !important;
+                z-index: 10001 !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                border: none !important;
+                padding: 0 !important;
+                font-size: 24px !important;
+            }
+
+
+            /* Related Books Grid Update */
+            .modal-related-wrapper {
+                background: #fdfdfd;
+                border-top: 1px solid #edf2f7 !important;
+                padding: 3rem 2rem !important;
+                margin: 0 -2rem -2.5rem -2rem;
+            }
+
+            .modal-related-wrapper h5 {
+                font-size: 1.4rem !important;
+                font-weight: 800;
+                color: #2d3748;
+                margin-bottom: 2.5rem !important;
+            }
+
+            .related-book-card img {
+                height: 250px !important;
+                /* LARGE THUMBNAILS */
+                border-radius: 12px !important;
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+                transition: 0.4s;
+            }
+
+            .related-book-card:hover img {
+                transform: translateY(-10px) scale(1.05);
+                box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2) !important;
+            }
+
+            .close-modal {
+                top: 20px;
+                right: 20px;
+                background: white;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+                color: #D52B1E;
+                /* RED CLOSE BUTTON */
+                width: 45px;
+                height: 45px;
+            }
+
+            /* --- Founders Section Styles --- */
+            .founders-section {
+                padding: 6rem 2rem;
+                background-color: var(--white);
+                position: relative;
+            }
+
+            .founder-card {
+                background: #fff;
+                padding: 1rem;
+                border-radius: 10px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+                transition: 0.3s;
+                border: 1px solid #f0f0f0;
+            }
+
+            .founder-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.374);
+            }
+
+            .founder-img-wrapper {
+                width: 120px !important;
+                height: 120px !important;
+                margin: 0 auto 1rem !important;
+                border-radius: 50% !important;
+                overflow: hidden !important;
+                border: 4px solid var(--primary-color) !important;
+                box-shadow: var(--shadow-md);
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                background-color: #fff;
+                /* Ensure background */
+            }
+
+            .founder-img {
+                width: 100% !important;
+                height: 100% !important;
+                object-fit: cover !important;
+                display: block !important;
+                border-radius: 50% !important;
+            }
+
+            .founder-name {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+                color: var(--primary-color);
+                font-family: 'Playfair Display', serif;
+            }
+
+            .founder-bio {
+                color: var(--text-light);
+                font-size: 0.95rem;
+                line-height: 1.6;
+            }
+
+            /* Breadcrumbs */
+            .breadcrumbs-container {
+                padding: 0.5rem 1.5rem;
+                margin-bottom: 0.5rem;
+                background: #f1f5f9;
+                border-radius: 50px;
+                display: inline-block;
+                font-size: 0.9rem;
+                color: var(--text-light);
+            }
+
+            .breadcrumbs-container span {
+                margin: 0 5px;
+                color: #cbd5e1;
+            }
+
+            .breadcrumbs-container a {
+                color: var(--primary-color);
+                text-decoration: none;
+                font-weight: 600;
+            }
+
+            .breadcrumbs-container .current {
+                color: var(--text-color);
+                font-weight: 700;
+            }
+
+            /* Sticky Tabs */
+            .dashboard-tabs.sticky {
+                position: sticky;
+                top: 70px;
+                /* Adjusted for header */
+                z-index: 900;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                padding: 1rem 1.5rem !important;
+                margin-bottom: 2rem !important;
+                border-radius: 0 0 20px 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                transition: all 0.3s ease;
+            }
+
+            /* PDF Badge & Quick Action */
+            .pdf-badge {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: #D52B1E;
+                color: white;
+                padding: 4px 8px;
+                border-radius: 8px;
+                font-size: 0.75rem;
+                font-weight: 700;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+                z-index: 10;
+            }
+
+            .quick-download-btn {
+                background: rgba(12, 100, 124, 0.1);
+                color: var(--primary-color);
+                border: none;
+                padding: 8px 12px;
+                border-radius: 50px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                transition: 0.2s;
+                cursor: pointer;
+                margin-left: 5px;
+            }
+
+            .quick-download-btn:hover {
+                background: var(--primary-color);
+                color: white;
+            }
+
+            /* --- Mobile Responsiveness (Updated Header) --- */
+            /* --- Mobile Header & Contacts Fix --- */
+            @media (max-width: 991px) {
+                .header-container {
+                    display: grid;
+                    grid-template-columns: 1fr auto;
+                    /* Logo Left, Nav Right */
+                    grid-template-rows: auto auto;
+                    gap: 15px;
+                    padding: 15px;
+                    align-items: center;
+                }
+
+                .logo {
+                    grid-column: 1;
+                    grid-row: 1;
+                    text-align: left;
+                }
+
+                .logo img {
+                    height: 90px;
+                    /* Compact logo for mobile */
+                    margin: 0;
+                }
+
+                .main-nav {
+                    grid-column: 2;
+                    grid-row: 1;
+                    justify-self: end;
+                }
+
+                .main-nav ul {
+                    display: flex;
+                    gap: 10px;
+                    align-items: center;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                }
+
+                /* Hide 'Inicio' on mobile to save space */
+                #navInicioBtn {
+                    display: none !important;
+                }
+
+                /* CONTACTS DROPDOWN FIX */
+                .dropdown-menu {
+                    position: absolute;
+                    top: 100% !important;
+                    right: 0 !important;
+                    left: auto !important;
+                    transform: translateY(10px);
+                    width: 200px;
+                    border: none !important;
+                    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+                    z-index: 10000;
+                }
+
+                /* Login Button Compact */
+                .btn-login-nav {
+                    padding: 0.4rem 0.8rem;
+                    font-size: 0.8rem;
+                }
+
+                /* SEARCH BAR FULL WIDTH */
+                .search-bar {
+                    grid-column: 1 / -1;
+                    /* Full Width */
+                    grid-row: 2;
+                    width: 100%;
+                    margin-top: 5px;
+                }
+
+                .search-bar input {
+                    width: 100%;
+                    border-radius: 50px;
+                    border: 1px solid #ddd;
+                    padding: 10px 20px;
+                    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+                }
+            }
+
+            /* --- Modal Aesthetic Upgrades (Global) --- */
+            /* Beautiful Download Button */
+            #modalDownloadBtn {
+                background: linear-gradient(45deg, #11998e, #38ef7d);
+                /* Fresh Green/Teal Gradient */
+                border: none;
+                box-shadow: 0 10px 20px rgba(56, 239, 125, 0.3);
+                color: white;
+                font-size: 1.1rem !important;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                transition: transform 0.3s, box-shadow 0.3s;
+                position: relative;
+                overflow: hidden;
+            }
+
+            #modalDownloadBtn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 25px rgba(56, 239, 125, 0.5);
+            }
+
+            /* Related Books Styling */
+            #relatedBooksContainer h5 {
+                font-size: 1.2rem;
+                margin-bottom: 1rem;
+                text-align: center;
+                color: var(--primary-color);
+                font-weight: 700;
+            }
+
+            .related-book-card {
+                border-radius: 15px;
+                overflow: hidden;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+                transition: 0.3s;
+            }
+
+            .related-book-card img {
+                width: 100%;
+                height: 120px;
+                object-fit: cover;
+            }
+
+            /* --- Mobile Responsiveness (Search Bar) --- */
+            @media (max-width: 991px) {
+
+                .search-bar {
+                    grid-column: 1 / -1;
+                    grid-row: 2;
+                    width: 100%;
+                    max-width: none;
+                    margin: 5px 0 0 0;
+                    order: unset;
+                }
+            }
+
+            /* Adjust Hero to match new header compactness */
+            .hero {
+                flex-direction: column-reverse;
+                padding: 2rem 1.5rem;
+                text-align: center;
+                min-height: auto;
+            }
+
+            .hero .left {
+                padding: 0;
+                margin-top: 2rem;
+            }
+
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .hero .right {
+                width: 100%;
+                margin-bottom: 2rem;
+            }
+
+            .mission {
+                flex-direction: column;
+                padding: 4rem 1.5rem;
+                gap: 3rem;
+            }
+
+            .mission .left {
+                order: 2;
+            }
+
+            .mission .right {
+                order: 1;
+                width: 100%;
+            }
+
+            .dashboard-header-bg {
+                padding: 1.5rem 1rem;
+            }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .section-header .lead {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .books-grid {
+                grid-template-columns: 1fr;
+                /* Single column */
+                gap: 2rem;
+                padding: 1rem 0;
+            }
+
+            .tab-btn {
+                width: 100%;
+                flex-direction: row;
+                height: auto;
+                justify-content: flex-start;
+                padding: 1rem 1.5rem;
+                border-radius: 15px;
+                margin-bottom: 0.5rem;
+            }
+
+            .tab-btn i {
+                margin-bottom: 0;
+                margin-right: 1.5rem;
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+
+            .dashboard-tabs {
+                flex-direction: row !important;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 0.5rem !important;
+                gap: 0.5rem;
+                justify-content: flex-start !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+                /* Hide scrollbar Firefox */
+            }
+
+            .dashboard-tabs::-webkit-scrollbar {
+                display: none;
+                /* Hide scrollbar Chrome/Safari */
+            }
+
+            .tab-btn {
+                width: auto !important;
+                flex-direction: row;
+                height: auto;
+                justify-content: center;
+                padding: 0.8rem 1.2rem !important;
+                border-radius: 50px !important;
+                margin-bottom: 0 !important;
+                font-size: 0.85rem !important;
+                flex-shrink: 0;
+            }
+
+            .tab-btn i {
+                margin-bottom: 0 !important;
+                margin-right: 8px !important;
+                width: auto !important;
+                height: auto !important;
+                font-size: 1rem !important;
+            }
+
+            .card-grid {
+                display: flex !important;
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 0.5rem 0 !important;
+                gap: 12px !important;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+
+            .card-grid::-webkit-scrollbar {
+                display: none;
+            }
+
+            .filter-card {
+                flex: 0 0 auto !important;
+                width: 140px !important;
+                min-height: 100px !important;
+                margin: 0 !important;
+                padding: 1rem !important;
+            }
+
+            .filter-card i {
+                font-size: 1.5rem !important;
+                margin-bottom: 0.5rem !important;
+            }
+
+            .filter-card span {
+                font-size: 0.75rem !important;
+                white-space: normal;
+                text-align: center;
+            }
+
+            .dashboard-main-area {
+                padding: 1rem 1rem 4rem;
+                /* Extra padding for bottom */
+            }
+
+            .breadcrumbs-container {
+                display: none;
+                /* Hide breadcrumbs on very small screens to save space */
+            }
+        }
+
+        /* Conflicting styles removed (lines 2005-2429) */
+
+        #modalBookTitle {
+            font-size: 1.8rem;
+            line-height: 1.2;
+            color: #1a1a1a;
+        }
+
+        /* Actions */
+        #modalDownloadBtn {
+            background: linear-gradient(45deg, #11998e, #38ef7d);
+            border: none;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        #modalDownloadBtn:active {
+            transform: scale(0.98);
+        }
+
+        /* --- BULK ORDER REDESIGN --- */
+        #bulkOrderModal .modal-header {
+            background: white !important;
+            border-bottom: 3px solid transparent !important;
+            border-image: linear-gradient(to right, #D52B1E 33%, #FFFFFF 33%, #FFFFFF 66%, #0038A8 66%) 1 !important;
+            color: var(--primary-color) !important;
+        }
+
+        #bulkOrderModal .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+        }
+
+        #bulkOrderModal .close {
+            color: #ccc !important;
+            text-shadow: none;
+        }
+
+        #bulkOrderSearch {
+            padding-left: 1rem;
+            height: 50px;
+            font-size: 1rem;
+            color: var(--charcoal);
+        }
+
+        .bulk-row {
+            transition: all 0.2s ease;
+            cursor: default;
+            border-radius: 12px !important;
+            margin-bottom: 8px !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
+        }
+
+        .bulk-row:hover {
+            background-color: #f8fafc !important;
+            border-color: var(--primary-color) !important;
+            transform: translateX(5px);
+        }
+
+        .qty-selector {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 30px;
+            padding: 4px;
+            gap: 10px;
+        }
+
+        .qty-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .qty-btn:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.9);
+        }
+
+        .qty-input {
+            width: 30px;
+            text-align: center;
+            font-weight: 700;
+            background: transparent;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: var(--charcoal);
+        }
+
+        .qty-input::-webkit-inner-spin-button,
+        .qty-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* Custom Scrollbar for Bulk List */
+        #bulkOrderList::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        #bulkOrderList::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+
+        #bulkOrderList::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+            border: 2px solid #f1f5f9;
+        }
+
+        #bulkOrderList::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @keyframes fadeInRow {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .bulk-row {
+            animation: fadeInRow 0.3s ease forwards;
+        }
+
+        /* Desktop Adjustments */
+        @media (min-width: 992px) {
+            .single-block-modal {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                max-width: 980px;
+                /* Increased from 950px */
+                max-height: 85vh;
+                margin: 2rem auto;
+                border-radius: 12px;
+                box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .modal-scroll-container {
+                padding-bottom: 0;
+                overflow-y: auto;
+            }
+
+            #quickViewModal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                background: rgba(0, 0, 0, 0.6);
+            }
+
+            /* HIDE SCROLL INDICATOR ON DESKTOP */
+            .scroll-indicator {
+                display: none !important;
+            }
+
+            /* --- LAYOUT STRUCTURE (Desktop) --- */
+            .modal-body-content {
+                display: flex;
+                flex-direction: row;
+                padding: 3rem;
+                align-items: flex-start;
+                min-height: 400px;
+            }
+
+            .modal-column-left {
+                width: 35%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0 0 2rem 0;
+                background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+                border-right: 1px solid #f0f3f7;
+            }
+
+            .modal-column-left #modalBookImage {
+                width: auto !important;
+                max-width: 100% !important;
+                height: auto !important;
+                max-height: 500px !important;
+                object-fit: contain;
+                margin-bottom: 1rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .modal-book-cover-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+            }
+
+            /* Decorative Specs below the cover */
+            .modal-visual-specs {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                width: 260px;
+                margin-top: 2rem;
+            }
+
+            .spec-badge {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                background: rgba(255, 255, 255, 0.8);
+                padding: 12px 16px;
+                border-radius: 16px;
+                border: 1px solid rgba(0, 0, 0, 0.03);
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            }
+
+            .spec-badge:hover {
+                transform: translateX(8px);
+                background: white;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                border-color: var(--primary-color);
+            }
+
+            .spec-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                flex-shrink: 0;
+            }
+
+            .bg-soft-blue {
+                background: #e3f2fd;
+                color: #1565c0;
+            }
+
+            .bg-soft-purple {
+                background: #f3e5f5;
+                color: #7b1fa2;
+            }
+
+            .bg-soft-gold {
+                background: #fff8e1;
+                color: #f57f17;
+            }
+
+            .spec-badge span {
+                font-size: 0.8rem;
+                font-weight: 800;
+                color: #2d3748;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .modal-book-cover-container {
+                width: fit-content !important;
+                max-width: 90%;
+                flex-shrink: 0;
+                box-shadow: none !important;
+                border-radius: 4px;
+                border: 2px solid var(--primary-color);
+                padding: 8px;
+                background: white;
+                transform: none !important;
+                margin: 0 auto;
+            }
+
+            .modal-book-cover-container img {
+                border-radius: 0;
+                box-shadow: none;
+                width: 100% !important;
+                /* FORCE fit to container */
+                height: auto !important;
+                max-width: 100% !important;
+                display: block;
+            }
+
+            .modal-column-right {
+                width: 65%;
+                /* Reverted to 65% */
+                padding: 0 0 0 3rem;
+                /* Left padding */
+                text-align: left;
+                /* Left align everything */
+            }
+
+            /* Desktop Typography */
+            #modalBookTitle {
+                text-align: left !important;
+                font-size: 2.5rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 20px !important;
+                color: var(--primary-color) !important;
+            }
+
+            #modalBookDescription {
+                text-align: left !important;
+                font-size: 1.1rem !important;
+            }
+
+            /* Hide inline actions on desktop (handled by footer) */
+            .modal-inline-actions {
+                display: none !important;
+                /* Double check hiding */
+            }
+
+            /* Remove Mobile Header Sticky behavior if it conflicts, 
+               but we likely want it to look like a dialog header */
+            .modal-header-actions {
+                position: relative !important;
+                /* Inside the card */
+                background-color: var(--primary-color) !important;
+                border-bottom: none !important;
+            }
+        }
+
+        /* FORCE MODALS ON TOP */
+        #authRequiredModal {
+            z-index: 12000 !important;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            /* LEFT SIDE */
+            z-index: 9999;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--py-blue));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            opacity: 0;
+            visibility: hidden;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .back-to-top.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            background: linear-gradient(135deg, var(--py-blue), var(--primary-color));
+        }
+
+        /* --- RED CIRCULAR CLOSE BUTTON --- */
+        .close-modal-btn {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            width: 42px;
+            /* Large readable touch target */
+            height: 42px;
+            background-color: #D52B1E !important;
+            color: white !important;
+            border-radius: 50%;
+            display: flex !important;
+            /* Force Flex */
+            align-items: center;
+            justify-content: center;
+            border: none !important;
+            opacity: 1 !important;
+            box-shadow: 0 4px 12px rgba(213, 43, 30, 0.4);
+            text-shadow: none;
+            transition: transform 0.2s;
+            z-index: 1050;
+            padding: 0 !important;
+        }
+
+        .close-modal-btn:hover {
+            transform: scale(1.1);
+            background-color: #b01f14 !important;
+        }
+
+        .close-modal-btn i {
+            color: white !important;
+            font-size: 1.5rem;
+            /* Larger Icon */
+            line-height: 1;
+            display: block;
+            margin: 0 !important;
+            /* PERFECT CENTER */
+            padding: 0 !important;
+        }
+
+        .close-modal-btn span {
+            display: none;
+        }
+
+        /* Override standard Bootstrap close */
+        .modal-header .close {
+            padding: 0;
+            margin: 0;
+            opacity: 1;
+        }
+
+        /* --- SCROLL INDICATOR --- */
+        .scroll-indicator {
+            text-align: center;
+            margin-top: -5px;
+            /* Negative margin to pull it UP */
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            /* Larger Arrow */
+            animation: bounce 2s infinite;
+            opacity: 0.9;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .scroll-indicator p {
+            font-size: 0.9rem;
+            /* Larger Text */
+            margin-bottom: 4px;
+            font-weight: 800;
+            /* Extra Bold */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-8px);
+            }
+
+            60% {
+                transform: translateY(-4px);
+            }
+        }
+
+        /* GLOBAL FIX FOR BOOK COVER SIZE (VERTICAL) */
+        .book-cover img {
+            height: 320px !important;
+            /* Libros Verticales Grandes */
+            width: auto !important;
+            object-fit: contain;
+        }
+
+        /* Libros Horizontales (Pre-Jardin, etc) más pequeños */
+        .horizontal-mode .book-cover img {
+            height: 180px !important;
+        }
+
+        /* GLOBAL FIX FOR RELATED BOOKS SIZE */
+        .related-book-card img {
+            height: 365px !important;
+            width: auto !important;
+            max-width: 100% !important;
+            object-fit: contain !important;
+            background: #fff !important;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+            margin: 0 auto !important;
+            display: block !important;
+        }
+
+        /* --- ARREGLO Z-INDEX LOGIN --- */
+        /* Forzamos que los modales estén SIEMPRE encima de todo (Arreglo Backdrop) */
+        #loginModal,
+        #registerModal,
+        #essayUploadModal,
+        #bulkOrderModal,
+        #authRequiredModal {
+            z-index: 100000 !important;
+        }
+
+        /* Ajustamos el fondo oscuro de Bootstrap para que esté justo debajo del modal */
+        .modal-backdrop {
+            z-index: 99999 !important;
+        }
+
+        /* --- AI WIZARD UI (FRIENDLY REDESIGN) --- */
+        .os-window {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 550px;
+            background: #ffffff;
+            border-radius: 24px;
+            /* More rounded = Friendlier */
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.02);
+            z-index: 1000000;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            animation: winOpen 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Bouncy pop-up */
+            border: none;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        @keyframes winOpen {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .os-titlebar {
+            background: white;
+            padding: 20px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: grab;
+            border-bottom: 2px solid #f0f2f5;
+        }
+
+        .os-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .os-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .os-btn-close {
+            background: #f0f2f5;
+            color: #666;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            font-size: 1rem;
+        }
+
+        .os-btn-close::before {
+            content: '\f00d';
+            /* FontAwesome Times */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        .os-btn-close:hover {
+            background: #ffe5e5;
+            color: #d92525;
+            transform: rotate(90deg);
+        }
+
+        /* Hide the other OS buttons to simplify */
+        .os-btn-min,
+        .os-btn-max {
+            display: none;
+        }
+
+        .os-content {
+            padding: 20px;
+            overflow-y: auto;
+            max-height: 70vh;
+            color: #333;
+        }
+
+        /* Wizard Styling in Window */
+        .wiz-btn {
+            font-family: inherit;
+            /* Fix: Inherit font for button tag */
+            outline: none;
+            /* Fix: Remove default focus outline */
+            border: 2px solid transparent;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wiz-btn i {
+            font-size: 1.8rem;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 12px;
+            margin-right: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .wiz-btn:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(213, 43, 30, 0.15);
+            /* Soft Red Shadow */
+        }
+
+        .wiz-btn:hover i {
+            transform: scale(1.1) rotate(-5deg);
+            color: var(--primary-color) !important;
+        }
+
+        /* --- MAGIC SLIDE GUIDE UI --- */
+        .slide-guide-container {
+            padding: 10px;
+        }
+
+        .guide-step {
+            padding: 1rem;
+            border-right: 1px solid #f0f0f0;
+        }
+
+        .guide-step:last-child {
+            border-right: none;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+            font-weight: 800;
+        }
+
+        .step-header i {
+            color: #1a1a1a;
+            font-size: 1.2rem;
+        }
+
+        .prompt-box {
+            background: #1a1e23;
+            padding: 1.5rem;
+            border-radius: 12px;
+            color: #ff4081;
+            position: relative;
+        }
+
+        .btn-prompt-copy {
+            background: transparent;
+            border: 1px solid #00c8ff;
+            color: #00c8ff;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            padding: 6px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .btn-prompt-copy:hover {
+            background: #00c8ff;
+            color: white;
+        }
+
+        .btn-gamma-go {
+            background: #108a4d;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(16, 138, 77, 0.3);
+        }
+
+        .btn-gamma-go:hover {
+            transform: translateY(-2px);
+            background: #0d703e;
+            color: white;
+        }
+
+        /* --- CYCLE NAVIGATION (EXPORANDO) --- */
+        .cycle-nav-bar {
+            background: #fff;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            position: sticky;
+            top: 0;
+            /* Sticky but will be affected by header hiding if needed */
+            z-index: 900;
+            animation: slideDown 0.4s ease;
+        }
+
+        .cycle-explorer-title {
+            font-size: 0.8rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .cycle-pills {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .cycle-pill {
+            padding: 10px 24px;
+            border-radius: 50px;
+            border: 1.5px solid var(--primary-color);
+            color: var(--primary-color);
+            font-weight: 700;
+            transition: all 0.3s;
+            cursor: pointer;
+            text-decoration: none;
+            background: white;
+            font-size: 0.95rem;
+        }
+
+        .cycle-pill.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .cycle-pill:hover:not(.active) {
+            background: rgba(0, 123, 255, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .btn-view-grid {
+            color: #4a5568;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn-view-grid:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- GRADE SELECTION UI (MATCH IMAGE 0) --- */
+        .grade-selection-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 3rem;
+            padding-top: 1rem;
+        }
+
+        .btn-back-home {
+            border: 1px solid #cbd5e0;
+            border-radius: 50px !important;
+            padding: 10px 24px !important;
+            color: #4a5568 !important;
+            font-weight: 700 !important;
+            font-size: 0.95rem !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 10px !important;
+            transition: 0.3s !important;
+            background: white !important;
+            text-decoration: none !important;
+            width: auto !important;
+            /* Prevent circular shape */
+        }
+
+        .btn-back-home:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: rgba(0, 123, 255, 0.02);
+            text-decoration: none;
+        }
+
+        .selection-title-blue {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        .grade-card {
+            background: #fff;
+            border: 1px solid #edf2f7;
+            border-radius: 20px;
+            padding: 2.5rem 1.5rem;
+            /* Balanced padding */
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            height: 200px;
+            /* Fixed height for uniformity */
+            width: 100%;
+        }
+
+        /* --- SELECTION MODE GRID RESET --- */
+        #books-container.selection-mode {
+            display: block !important;
+            grid-template-columns: none !important;
+            padding: 0 !important;
+        }
+
+        #books-container.selection-mode .row {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+        }
+
+        .grade-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06);
+            border-color: var(--primary-color);
+        }
+
+        .grade-card .icon-box {
+            background: #edf2f7;
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 18px;
+            margin-bottom: 5px;
+            transition: 0.3s;
+        }
+
+        .grade-card:hover .icon-box {
+            background: var(--primary-color);
+        }
+
+        .grade-card i {
+            font-size: 2rem;
+            color: #2d3748;
+            transition: 0.3s;
+        }
+
+        .grade-card:hover i {
+            color: white;
+        }
+
+        .grade-card h5 {
+            font-weight: 800;
+            color: #1a202c;
+            margin: 0;
+            font-size: 1.4rem;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Voice Search Button Hidden by Default unless JS enables it */
+        #voiceSearchBtn {
+            display: none;
+        }
+
+        /* Accessibility Focus Indicators */
+        div[role="button"]:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(12, 100, 124, 0.4);
+            transform: translateY(-2px);
+        }
+
+        a:focus,
+        button:focus,
+        input:focus {
+            outline: 2px solid rgba(12, 100, 124, 0.5);
+            outline-offset: 2px;
+        }
+
+        /* --- Z-INDEX FIX for SweetAlert over Custom Modals --- */
+        .swal2-container {
+            z-index: 20000 !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <a href="javascript:void(0)" onclick="hardReset()"><img src="img/portadas/logo aranduka.jpeg"
+                        alt="Aranduka Logo"></a>
+            </div>
+
+            <div class="search-bar">
+                <form id="searchForm" style="display: flex; position:relative; width: 100%;">
+                    <input type="text" id="searchInput" placeholder="Buscar libro..." autocomplete="off">
+                    <!-- Adjusted for mobile tappability -->
+                    <button type="button" id="voiceSearchBtn" style="padding: 0 15px; right: 40px;"><i
+                            class="fas fa-microphone"></i></button>
+                    <button type="submit" style="padding: 0 15px; right: 5px; z-index: 10;"><i
+                            class="fas fa-search"></i></button>
+                </form>
+            </div>
+
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="javascript:void(0)" id="navInicioBtn" class="active" onclick="hardReset()">Inicio</a>
+                    </li>
+
+                    <!-- Subir Aporte Button (Desktop) -->
+
+
+                    <!-- Contact Dropdown -->
+
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false" style="cursor: pointer;">
+                            Contactos
+                        </a>
+                        <div class="dropdown-menu border-0 shadow-lg mt-2" style="border-radius: 15px; padding: 1rem;">
+                            <a class="dropdown-item py-2 rounded" href="https://www.facebook.com/share/1B2zAdUQPS/"
+                                target="_blank">
+                                <i class="fab fa-facebook text-primary mr-2" style="width: 20px;"></i> Facebook
+                            </a>
+                            <a class="dropdown-item py-2 rounded" href="https://www.instagram.com/editorialaranduka/"
+                                target="_blank">
+                                <i class="fab fa-instagram text-danger mr-2" style="width: 20px;"></i> Instagram
+                            </a>
+                            <a class="dropdown-item py-2 rounded" href="https://wa.me/595983714552" target="_blank">
+                                <i class="fab fa-whatsapp text-success mr-2" style="width: 20px;"></i> WhatsApp
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item py-2 rounded" href="mailto:arandukacentral@gmail.com">
+                                <i class="fas fa-envelope text-secondary mr-2" style="width: 20px;"></i> Correo
+                            </a>
+                        </div>
+                    </li>
+                    <!-- Admin Panel Access (Conditional in JS) -->
+                    <li id="admin-menu-item" class="d-none">
+                        <a href="#" class="btn-admin-nav" onclick="$('#adminDashboardModal').modal('show')">
+                            <i class="fas fa-lock-open mr-1"></i> Panel de Control
+                        </a>
+                    </li>
+                    <li id="auth-menu-item">
+                        <a href="#" id="loginBtn" class="btn-login-nav">
+                            <i class="fas fa-user-circle mr-1"></i> Iniciar Sesión
+                        </a>
+                    </li>
+                    <li id="user-display-item" class="d-none">
+                        <span class="mr-2">Hola, <b id="headerUserName">Usuario</b></span>
+                        <a href="#" id="logoutBtn" class="text-danger"><i class="fas fa-sign-out-alt"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section (Premium Layout) -->
+    <section class="hero">
+        <div class="left">
+            <h1>Editorial Aranduka</h1>
+            <h3 style="color: #0ee0f3; text-shadow: 0 4px 10px rgba(14, 224, 243, 0.3);">Biblioteca Digital Interactiva
+            </h3>
+            <p style="font-weight: 300; letter-spacing: 0.5px;">Impulsando la educación paraguaya con materiales de
+                calidad, guías docentes exclusivas y una comunidad
+                vibrante. Accede a más de 85 libros de texto de manera instantánea y gratuita.</p>
+            <a href="#materiales-section" class="btn-hero"
+                style="border: 1px solid rgba(255,255,255,0.3); background: rgba(255,255,255,0.1); color: white; backdrop-filter: blur(5px);">Explorar
+                Catálogo</a>
+        </div>
+        <div class="right">
+            <!-- Featured Book Carousel (One book at a time, auto-rotates) -->
+            <div id="heroCarousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+                <div class="carousel-inner" id="heroCarouselInner">
+                    <!-- JS will populate these slides -->
+                    <div class="carousel-item active">
+                        <img src="img/portadas/mat6.png" class="img-fluid rounded shadow-lg" alt="Aranduka"
+                            style="max-height: 350px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Advantages Row -->
+    <!-- Advantages Section Removed -->
+
+    <!-- Value Proposition Section -->
+    <!-- Aranduka Comprehensive Info Section -->
+
+
+    <!-- Main Dashboard Section -->
+    <main class="dashboard-container" id="materiales-section">
+        <div class="dashboard-header-bg">
+            <div class="section-header">
+                <h2>Libros al Instante</h2>
+                <p class="lead" style="font-weight: 500; color: var(--slate-grey);">Explora nuestra biblioteca digital
+                    con un solo clic. Materiales oficiales y actualizados.</p>
+            </div>
+
+            <div class="dashboard-tabs">
+                <button class="tab-btn active" data-target="secciones"><i class="fas fa-layer-group"></i> Niveles y
+                    Grados</button>
+                <button class="tab-btn" data-target="materias"><i class="fas fa-book"></i> Por Materias</button>
+                <button class="tab-btn" data-target="favoritos"><i class="fas fa-shopping-cart"></i> Mi Pedido</button>
+                <button class="btn-essay-upload" onclick="$('#essayUploadModal').modal('show')"
+                    style="border: 2px dashed #28a745; color: #28a745; background: transparent; border-radius: 12px; padding: 10px 20px; font-weight: 600; transition: all 0.3s;">
+                    <i class="fas fa-file-upload text-success"></i> Enviar Ensayo
+                </button>
+            </div>
+        </div>
+
+        <div class="dashboard-main-area">
+
+
+            <!-- Filters by Section -->
+            <div id="secciones" class="filter-section active">
+                <div class="card-grid">
+                    <a href="#" class="filter-card" data-level="educacion inicial">
+                        <i class="fas fa-shapes"></i>
+                        <span>Educación Inicial</span>
+                    </a>
+                    <a href="#" class="filter-card" data-level="primer ciclo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Primer Ciclo</span>
+                    </a>
+                    <a href="#" class="filter-card" data-level="segundo ciclo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Segundo Ciclo</span>
+                    </a>
+                    <a href="#" class="filter-card" data-level="tercer ciclo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Tercer Ciclo</span>
+                    </a>
+                    <a href="#" class="filter-card" data-level="nivel medio">
+                        <i class="fas fa-university"></i>
+                        <span>Nivel Medio</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filters by Subject -->
+            <div id="materias" class="filter-section">
+                <div class="card-grid">
+                    <a href="#" class="filter-card" data-category="matematica">
+                        <i class="fas fa-calculator"></i>
+                        <span>Matemática</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="comunicacion">
+                        <i class="fas fa-book"></i>
+                        <span>Comunicación</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="lengua-castellana">
+                        <i class="fas fa-book-open"></i>
+                        <span>Lengua y Lit. Castellana</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="guarani">
+                        <i class="far fa-comments"></i>
+                        <span>Guaraní</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="lengua-guarani">
+                        <i class="fas fa-comment-dots"></i>
+                        <span>Lengua y Lit. Guaraní</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="ciencias-naturales">
+                        <i class="fas fa-leaf"></i>
+                        <span>Ciencias Naturales</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="ciencias-de-la-naturaleza-y-salud">
+                        <i class="fas fa-heartbeat"></i>
+                        <span>Ciencias de la Naturaleza y Salud</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="vida-social">
+                        <i class="fas fa-user-friends"></i>
+                        <span>Vida Social</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="ciencias-sociales">
+                        <i class="fas fa-users-cog"></i>
+                        <span>Ciencias Sociales</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="historia">
+                        <i class="fas fa-globe-americas"></i>
+                        <span>Historia y Geografía</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="trabajo-tecnologia">
+                        <i class="fas fa-tools"></i>
+                        <span>Trabajo y Tecnología</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="etica">
+                        <i class="fas fa-balance-scale"></i>
+                        <span>Formación Ética</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="fisica">
+                        <i class="fas fa-atom"></i>
+                        <span>Física</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="quimica">
+                        <i class="fas fa-vials"></i>
+                        <span>Química</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="filosofia">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Filosofía</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="formacion-docente">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                        <span>Formación Docente</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="sociologia">
+                        <i class="fas fa-users"></i>
+                        <span>Sociología</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="politica">
+                        <i class="fas fa-landmark"></i>
+                        <span>Política</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="caligrafia">
+                        <i class="fas fa-pen-nib"></i>
+                        <span>Caligrafía</span>
+                    </a>
+                    <a href="#" class="filter-card" data-category="inicial">
+                        <i class="fas fa-child"></i>
+                        <span>Educación Inicial</span>
+                    </a>
+                </div>
+            </div>
+
+
+
+            <!-- Logout Logic (Hidden Tab Trigger) -->
+            <div id="logout" class="filter-section text-center py-5">
+                <i class="fas fa-sign-out-alt text-muted mb-4" style="font-size: 3rem;"></i>
+                <h4>¿Estás seguro que quieres salir?</h4>
+                <button class="btn btn-danger rounded-pill px-5 mt-3"
+                    onclick="document.getElementById('logoutBtn').click()">Cerrar Sesión</button>
+            </div>
+
+            <!-- Results Grid -->
+            <div class="container text-center mb-2">
+                <div id="breadcrumbs" class="breadcrumbs-container" style="display: none;">
+                    <a href="#" class="breadcrumb-link" data-target="home">Inicio</a> <span>/</span> <span
+                        class="current">Libros</span>
+                </div>
+            </div>
+
+            <div class="results-area mt-3">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 id="viewTitle" style="margin:0">Todos los Materiales</h3>
+                    <div class="d-flex align-items-center flex-wrap" style="gap: 15px;">
+
+                    </div>
+                </div>
+
+                <div class="books-grid" id="books-container">
+                    <!-- JS will populate these -->
+                    <div class="col-12 text-center py-5">
+                        <i class="fas fa-spinner fa-spin fa-2x text-muted"></i>
+                    </div>
+                </div>
+            </div> <!-- End results-area -->
+        </div> <!-- End dashboard-main-area -->
+        </div> <!-- End dashboard-container -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <h4>Aranduka</h4>
+            <div class="social-links mb-4">
+                <a href="https://www.facebook.com/share/1B2zAdUQPS/" target="_blank"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/editorialaranduka/" target="_blank"><i
+                        class="fab fa-instagram"></i></a>
+                <a href="https://wa.me/595983714552" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+            <p>&copy; 2025 Editorial Aranduka | Desarrollado por BTI026.</p>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="quickViewModal" class="modal-overlay">
+        <div class="modal-content-custom"
+            style="display: flex; flex-direction: column; max-height: 90vh; overflow: hidden;">
+            <!-- Modal Header (Mobile & Desktop) - Force Sticky & White Background -->
+
+            <!-- Clean White Header -->
+            <div class="modal-header-actions d-flex align-items-center justify-content-between px-4 py-3"
+                style="position: sticky; top: 0; z-index: 1050; width: 100%; background-color: #ffffff !important; flex-shrink: 0; border-bottom: 1px solid #f0f0f0;">
+
+                <!-- Title Left (Hidden on desktop, useful for mobile context, or just Brand) -->
+                <h5 class="mb-0 font-weight-bold ml-2"
+                    style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: var(--primary-color);">
+                    <i class="fas fa-book-open mr-2"></i>Detalles del Recurso
+                </h5>
+
+                <!-- Visible High-Contrast Close Button -->
+                <!-- Visible High-Contrast Close Button -->
+                <button id="emergencyCloseBtn" class="p-0 border-0 close-modal-btn ml-auto" type="button"
+                    onclick="window.closeBookModal()"
+                    style="background: transparent !important; color: #dc3545 !important; transition: none !important; transform: none !important; opacity: 1 !important; text-decoration: none !important; box-shadow: none !important; outline: none !important; display: flex; align-items: center; justify-content: center; position: relative; z-index: 9000; cursor: pointer;">
+
+                    <!-- Inline SVG with pointer-events: none -->
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        style="pointer-events: none;">
+                        <circle cx="12" cy="12" r="10" fill="#dc3545" />
+                        <path d="M15 9L9 15" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M9 9L15 15" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Scrollable Content Area -->
+            <div class="modal-scroll-container"
+                style="flex-grow: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; position: relative;">
+                <div class="modal-body-content position-relative" style="padding-bottom: 80px;">
+
+                    <!-- Left Column: Image -->
+                    <div class="modal-column-left">
+                        <div class="modal-book-cover-container">
+                            <img src="" alt="Book Cover" id="modalBookImage">
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Details & Actions -->
+
+                    <div class="modal-column-right">
+
+                        <!-- Title (Centered on Mobile via CSS) -->
+                        <h2 id="modalBookTitle" class="font-weight-bold text-dark mb-3"
+                            style="font-family: 'Playfair Display', serif; line-height: 1.2;">Título del Libro</h2>
+
+                        <!-- Metadata Section (Modern Pills) -->
+                        <div class="mb-4 d-flex flex-wrap gap-2" style="gap: 8px;">
+                            <span class="badge badge-pill px-3 py-2"
+                                style="background: #f0f2f5; color: #444; font-weight: 600; font-size: 0.85rem;">
+                                <i class="fas fa-user-edit mr-1 text-primary"></i> <span id="modalBookAuthor">Editorial
+                                    Aranduka</span>
+                            </span>
+                            <span class="badge badge-pill px-3 py-2"
+                                style="background: #fff3e0; color: #e65100; font-weight: 600; font-size: 0.85rem;">
+                                <i class="fas fa-layer-group mr-1"></i> <span id="modalBookLevelBadge">Nivel</span>
+                            </span>
+                            <span class="badge badge-pill px-3 py-2"
+                                style="background: #e0f2f1; color: #00695c; font-weight: 600; font-size: 0.85rem;">
+                                <i class="fas fa-tag mr-1"></i> <span id="modalBookGenre">Educativo</span>
+                            </span>
+                        </div>
+
+                        <!-- Description -->
+                        <h5 class="text-primary font-weight-bold mb-2">Descripción</h5>
+                        <p class="text-secondary mb-4" id="modalBookDescription"
+                            style="font-size: 1rem; line-height: 1.6; text-align: justify;">
+                            Descripción...
+                        </p>
+
+                        <!-- Actions Area (Content) -->
+
+                        <!-- NEW MODERN ACTION BUTTONS (Sleek Cards) -->
+                        <div class="modal-actions-grid mt-5">
+                            <div class="row">
+                                <!-- 2. Leer Ahora -->
+                                <div class="col-12 col-md-6 mb-3 mb-md-0">
+                                    <button class="btn btn-block p-0 h-100 modern-action-btn shadow-sm"
+                                        id="btnDownloadResources"
+                                        style="border: none; background: white; border-radius: 16px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;">
+                                        <div class="d-flex flex-column align-items-center justify-content-center p-4 h-100"
+                                            style="background: linear-gradient(135deg, #fff 0%, #fff5f5 100%); border: 2px solid #ffebee;">
+                                            <div class="icon-circle mb-3 d-flex align-items-center justify-content-center"
+                                                style="width: 50px; height: 50px; background: #ffebee; border-radius: 50%; color: #c62828;">
+                                                <i class="fas fa-book-reader fa-lg"></i>
+                                            </div>
+                                            <span class="font-weight-bold text-dark mb-1"
+                                                style="font-size: 1.05rem;">Leer Ahora</span>
+                                            <small class="text-muted text-center" style="font-size: 0.85rem;">Visualizar
+                                                PDF</small>
+                                        </div>
+                                    </button>
+                                </div>
+
+                                <!-- 3. AI Creator -->
+                                <div class="col-12 col-md-6">
+                                    <button class="btn btn-block p-0 h-100 modern-action-btn shadow-sm"
+                                        id="btnCreateClass"
+                                        style="border: none; background: white; border-radius: 16px; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;">
+                                        <div class="d-flex flex-column align-items-center justify-content-center p-4 h-100"
+                                            style="background: linear-gradient(135deg, #fff 0%, #f0fdf4 100%); border: 2px solid #e0f2f1;">
+                                            <div class="icon-circle mb-3 d-flex align-items-center justify-content-center"
+                                                style="width: 50px; height: 50px; background: #e0f2f1; border-radius: 50%; color: #00695c;">
+                                                <i class="fas fa-magic fa-lg"></i>
+                                            </div>
+                                            <span class="font-weight-bold text-dark mb-1"
+                                                style="font-size: 1.05rem;">Crear Diapositivas</span>
+                                            <small class="text-muted text-center" style="font-size: 0.85rem;">Asistente
+                                                IA</small>
+                                        </div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Plan Buttons Row (Hidden by default) -->
+                            <div class="row mt-3" id="planButtonsRow" style="display:none;">
+                                <div class="col-6">
+                                    <button class="btn btn-block p-3 shadow-sm" id="btnPlanAnual"
+                                        style="background: #e3f2fd; color: #1565c0; border: none; border-radius: 12px; font-weight: 600;">
+                                        <i class="fas fa-file-word mr-2"></i> Plan Anual
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-block p-3 shadow-sm" id="btnPlanDiario"
+                                        style="background: #e3f2fd; color: #1565c0; border: none; border-radius: 12px; font-weight: 600;">
+                                        <i class="fas fa-file-word mr-2"></i> Plan Diario
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Spacer explicitly replacing Close Button -->
+                        <div class="pb-5"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-body p-5">
+                    <h4 class="text-center font-weight-bold mb-4">Ingresar a Aranduka</h4>
+                    <div class="auth-wrapper">
+                        <!-- Student/User Login Section (Default) -->
+                        <div id="pane-student">
+
+                            <!-- Tab Navigation for Login/Register -->
+                            <ul class="nav nav-pills nav-justified mb-4" id="studentAuthTabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active font-weight-bold border-0 bg-light rounded-pill mx-1"
+                                        id="tab-login" data-toggle="tab" href="#auth-login" role="tab"
+                                        style="color: var(--primary-color);">Acceso Biblioteca (Invitado)</a>
+                                </li>
+                            </ul>
+
+                            <div class="tab-content">
+                                <!-- LOGIN FORM -->
+                                <div class="tab-pane fade show active" id="auth-login" role="tabpanel">
+                                    <form id="studentLoginForm">
+                                        <div class="form-group mb-4">
+                                            <label class="small text-muted font-weight-bold ml-2">TUS
+                                                CREDENCIALES</label>
+                                            <div class="input-group">
+                                                <div class="input-group-prepend">
+                                                    <span
+                                                        class="input-group-text bg-white border-right-0 rounded-left-pill pl-3"><i
+                                                            class="fas fa-user text-muted"></i></span>
+                                                </div>
+                                                <input type="text" name="ci"
+                                                    class="form-control border-left-0 rounded-right-pill py-4"
+                                                    placeholder="Usuario (ej: invitado)" style="font-size:1rem;"
+                                                    required>
+                                            </div>
+                                        </div>
+                                        <button type="submit"
+                                            class="btn btn-primary btn-block rounded-pill py-3 font-weight-bold shadow-sm transition-hover">
+                                            Ingresar a la Biblioteca
+                                        </button>
+                                        <button type="button" id="btnDemoLogin"
+                                            class="btn btn-outline-primary btn-block rounded-pill py-2 mt-3 font-weight-bold"
+                                            style="border-style: dashed; border-width: 2px;">
+                                            <i class="fas fa-magic mr-2"></i> Acceso Rápido (Demo)
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Register Link -->
+                        <div class="text-center mt-3">
+                            <span class="text-muted">¿No tienes cuenta?</span>
+                            <a href="#" class="font-weight-bold ml-1" data-dismiss="modal" data-toggle="modal"
+                                data-target="#registerModal" style="color: var(--primary-color);">
+                                Registrarse
+                            </a>
+                        </div>
+
+                        <!-- Footer Link for Admin -->
+                        <div class="text-center mt-3 pt-3 border-top">
+                            <a href="#" class="small text-muted"
+                                onclick="$('#pane-student').hide(); $('#pane-admin').fadeIn(); return false;">
+                                <i class="fas fa-lock mr-1"></i> Acceso Administrativo
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Admin Login Section (Hidden by default) -->
+                    <div id="pane-admin" style="display:none;">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-user-shield fa-3x text-danger mb-3"></i>
+                            <h5 class="font-weight-bold">Zona Administrativa</h5>
+                        </div>
+                        <form id="adminLoginForm">
+                            <div class="form-group">
+                                <input type="text" id="adminUser" class="form-control rounded-pill py-4 mb-3"
+                                    placeholder="Usuario Admin o Correo">
+                            </div>
+                            <div class="form-group">
+                                <input type="password" id="adminPass" class="form-control rounded-pill py-4 mb-3"
+                                    placeholder="Contraseña">
+                            </div>
+                            <button type="submit"
+                                class="btn btn-danger btn-block rounded-pill py-3 font-weight-bold shadow">
+                                Entrar al Panel
+                            </button>
+                        </form>
+                        <div class="text-center mt-3">
+                            <a href="#" class="small text-muted"
+                                onclick="$('#pane-admin').hide(); $('#pane-student').fadeIn(); return false;">
+                                &larr; Volver al Login de Estudiantes y docentes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Modal REMOVED (Moved to admin.html) -->
+
+
+
+    <!-- Auth Required Modal -->
+    <div class="modal fade" id="authRequiredModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 text-center p-5" style="border-radius: 20px;">
+                <div class="mb-4">
+                    <i class="fas fa-lock text-warning" style="font-size: 4rem;"></i>
+                </div>
+                <h3 class="font-weight-bold mb-3">Acceso Restringido</h3>
+                <p class="text-muted">Para descargar materiales o subir aportes, necesitas registrar tus datos
+                    básicos.
+                </p>
+                <div class="d-flex flex-column gap-2 mt-4">
+                    <button class="btn btn-primary btn-lg rounded-pill shadow"
+                        onclick="$('#authRequiredModal').modal('hide'); $('#loginModal').modal('show');">
+                        Ingresar Ahora
+                    </button>
+                    <button class="btn btn-link text-muted mt-2" data-dismiss="modal">Más tarde</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+    <!-- WhatsApp FAB -->
+
+
+    <!-- Back to Top Button -->
+    <!-- WhatsApp FAB & Bulk Order -->
+    <div class="whatsapp-float-wrapper"
+        style="position: fixed; bottom: 25px; right: 25px; z-index: 9999; display: flex; flex-direction: column; align-items: end; gap: 10px; pointer-events: auto;">
+
+        <!-- Bulk Order FAB -->
+        <div class="text-center group-hover-parent" style="display: flex; flex-direction: column; align-items: center;">
+            <span class="bg-white shadow px-2 py-1 rounded mb-1 small font-weight-bold text-primary text-nowrap"
+                style="font-size: 0.75rem; border: 1px solid #eee;">Hacer Pedido</span>
+            <button onclick="openBulkOrderModal()" class="shadow-lg btn btn-primary border-0"
+                style="width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: transform 0.3s;">
+                <i class="fas fa-shopping-basket"></i>
+            </button>
+        </div>
+
+        <!-- WhatsApp Contact -->
+        <div class="text-center" style="display: flex; flex-direction: column; align-items: center;">
+            <span class="bg-white shadow px-2 py-1 rounded mb-1 small font-weight-bold text-success text-nowrap"
+                style="font-size: 0.75rem; border: 1px solid #eee;">Contáctanos</span>
+            <a href="https://wa.me/595994675219" target="_blank" class="shadow-lg"
+                style="background: #25D366; color: white; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; text-decoration: none; transition: transform 0.3s;">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Back to Top Button (Subir Arriba) -->
+
+    <button id="backToTopBtn" class="btn-back-to-top" title="Subir arriba" style="z-index: 2000 !important;"
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                <div class="modal-header border-0 bg-primary text-white p-4">
+                    <h5 class="modal-title font-weight-bold">
+                        <i class="fas fa-user-plus mr-2"></i>Crear Cuenta
+                    </h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close"
+                        style="opacity: 1;">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <form id="registerForm">
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold text-dark small text-uppercase">Nombre Completo</label>
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0 bg-white"><i
+                                            class="fas fa-user text-muted"></i></span>
+                                </div>
+                                <input type="text" class="form-control border-0 shadow-sm" id="regName"
+                                    placeholder="Tu nombre" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold text-dark small text-uppercase">Correo
+                                Electrónico</label>
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0 bg-white"><i
+                                            class="fas fa-envelope text-muted"></i></span>
+                                </div>
+                                <input type="email" class="form-control border-0 shadow-sm" id="regEmail"
+                                    placeholder="correo@ejemplo.com" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="font-weight-bold text-dark small text-uppercase">Contraseña</label>
+                            <div class="input-group input-group-lg">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text border-0 bg-white"><i
+                                            class="fas fa-lock text-muted"></i></span>
+                                </div>
+                                <input type="password" class="form-control border-0 shadow-sm" id="regPassword"
+                                    placeholder="******" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="font-weight-bold text-dark small text-uppercase">Teléfono</label>
+                                <input type="tel" class="form-control border-0 shadow-sm" id="regPhone"
+                                    placeholder="09XX-XXX-XXX">
+                            </div>
+                            <div class="col-md-6 form-group mb-3">
+                                <label class="font-weight-bold text-dark small text-uppercase">Rol</label>
+                                <select class="form-control border-0 shadow-sm" id="regRole">
+                                    <option value="Estudiante">Estudiante</option>
+                                    <option value="Docente">Docente</option>
+                                    <option value="Institución">Institución</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label class="font-weight-bold text-dark small text-uppercase">Institución /
+                                Colegio</label>
+                            <input type="text" class="form-control border-0 shadow-sm" id="regSchool"
+                                placeholder="Nombre completo de la institución">
+                        </div>
+
+                        <button type="submit"
+                            class="btn btn-primary btn-block btn-lg rounded-pill shadow-sm font-weight-bold">
+                            Registrarse <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">¿Ya tienes cuenta? <a href="#" data-dismiss="modal"
+                                data-toggle="modal" data-target="#loginModal"
+                                class="font-weight-bold text-primary">Inicia Sesión</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bulk Order Modal (New Feature) -->
+    <div class="modal fade" id="bulkOrderModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                <div class="modal-header border-0 p-4">
+                    <h5 class="modal-title font-weight-bold">
+                        <i class="fas fa-shopping-basket mr-2"></i> Pedido Mayorista / Varios Libros
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4 bg-white">
+                    <p class="text-muted mb-4" style="font-size: 0.95rem;">Selecciona la cantidad de libros que
+                        deseas
+                        para cada título y al final presiona "Enviar Pedido".</p>
+
+                    <!-- Search Input -->
+                    <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden border"
+                        style="border-color: #eee !important;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text border-0 bg-white pl-3"><i
+                                    class="fas fa-search text-muted"></i></span>
+                        </div>
+                        <input type="text" id="bulkOrderSearch" class="form-control border-0"
+                            placeholder="Buscar por título o grado...">
+                    </div>
+
+                    <div id="bulkOrderList" class="p-1" style="max-height: 55vh; overflow-y: auto;">
+                        <!-- JS Will Populate This -->
+                    </div>
+                </div>
+                <div class="modal-footer border-top bg-light p-3">
+                    <button type="button" class="btn btn-link text-muted font-weight-bold" data-dismiss="modal"
+                        style="text-decoration: none;">Cerrar</button>
+                    <button type="button" class="btn btn-primary rounded-pill font-weight-bold px-5 shadow-sm py-2"
+                        onclick="sendBulkOrder()">
+                        <i class="fab fa-whatsapp mr-2"></i> Enviar Pedido por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- Essay Upload Modal -->
+    <div class="modal fade" id="essayUploadModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+                <div class="modal-header border-0 bg-light p-4">
+                    <div>
+                        <h5 class="modal-title font-weight-bold" style="color: #2D3748;">Enviar Aporte / Ensayo</h5>
+                        <p class="text-muted small mb-0">Comparte tu material con la comunidad Aranduka.</p>
+                    </div>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-info py-2 px-3 mb-4"
+                        style="border-radius: 12px; font-size: 0.85rem; border: none; background: #ebf8ff; color: #3182ce;">
+                        <i class="fas fa-info-circle mr-2"></i> Formatos aceptados: <b>TXT, PDF, DOC, DOCX</b>.
+                    </div>
+                    <form id="essayUploadForm">
+                        <div class="form-group mb-3">
+                            <label class="small font-weight-bold text-muted text-uppercase">Tus Datos</label>
+                            <input type="text" id="essayUserName" class="form-control" placeholder="Nombre completo"
+                                required style="border-radius: 10px; padding: 12px; height: 45px;">
+                        </div>
+                        <div class="form-row mb-3">
+                            <div class="col-6">
+                                <input type="tel" id="essayUserPhone" class="form-control" placeholder="WhatsApp"
+                                    required style="border-radius: 10px; padding: 12px; height: 45px;">
+                            </div>
+                            <div class="col-6">
+                                <select id="essayUserLevel" class="form-control" required
+                                    style="border-radius: 10px; height: 45px; font-size: 0.9rem;">
+                                    <option value="" disabled selected>Nivel/Grado</option>
+                                    <option value="Docente">Docente</option>
+                                    <option value="Estudiante">Estudiante</option>
+                                    <option value="Pre-Escolar">Pre-Escolar</option>
+                                    <option value="Primaria">Primaria (1-6)</option>
+                                    <option value="Secundaria">Secundaria (7-9)</option>
+                                    <option value="Nivel Medio">Nivel Medio</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label class="small font-weight-bold text-muted text-uppercase">Sobre el
+                                Material</label>
+                            <input type="text" id="essaySubject" class="form-control"
+                                placeholder="Materia o Tema (Ej: Historia, Ciencias)" required
+                                style="border-radius: 10px; padding: 12px; height: 45px;">
+                        </div>
+                        <div class="form-group mb-4">
+                            <div class="custom-file" style="height: 50px;">
+                                <input type="file" class="custom-file-input" id="essayFile"
+                                    accept=".pdf,.txt,.doc,.docx" required>
+                                <label class="custom-file-label d-flex align-items-center" for="essayFile"
+                                    id="essayFileLabel"
+                                    style="border-radius: 10px; height: 50px; border: 2px dashed #cbd5e0;">Seleccionar
+                                    Archivo...</label>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block py-3 font-weight-bold shadow-sm"
+                            style="border-radius: 12px; font-size: 1rem; background: var(--primary-color);">
+                            <i class="fas fa-paper-plane mr-2"></i> Publicar Ensayo
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

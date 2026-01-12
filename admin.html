@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aranduka | Panel de Control Premium</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- SweetAlert2 -->
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+
+    <!-- Custom Admin CSS -->
+    <link href="css/admin.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <nav class="sidebar d-flex flex-column" id="sidebar">
+        <div class="sidebar-brand d-flex align-items-center justify-content-center py-4 px-3 mb-3">
+
+            <span class="ml-3 font-weight-bold text-dark h5 mb-0"
+                style="font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.5px;">Aranduka<span
+                    style="color: var(--primary);">Admin</span></span>
+        </div>
+
+        <ul class="nav flex-column mb-auto">
+            <li class="nav-item">
+                <a class="nav-link active" href="#dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#orders">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Pedidos</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#inventory">
+                    <i class="fas fa-book"></i>
+                    <span>Inventario</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#users">
+                    <i class="fas fa-users"></i>
+                    <span>Usuarios</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#downloads">
+                    <i class="fas fa-file-download"></i>
+                    <span>Descargas</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#essays">
+                    <i class="fas fa-file-signature"></i>
+                    <span>Ensayos</span>
+                </a>
+            </li>
+        </ul>
+
+        <div class="sidebar-footer p-3">
+            <a href="index.html" class="btn btn-outline-light btn-block btn-sm" id="adminLogoutBtn">
+                <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow-sm px-4">
+            <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                <i class="fa fa-bars"></i>
+            </button>
+            <h4 class="mb-0 text-gray-800 font-weight-bold">Panel de Control</h4>
+
+            <ul class="navbar-nav ml-auto">
+                <div class="topbar-divider d-none d-sm-block"></div>
+                <!-- Nav Item - User Information -->
+                <li class="nav-item dropdown no-arrow">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown">
+                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
+                        <div class="img-profile rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                            style="width: 32px; height: 32px;">A</div>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <div class="container-fluid px-4">
+
+            <!-- Stats Grid -->
+            <div id="dashboard-view">
+                <div class="row mb-5">
+                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold text-muted">Colección
+                                                Total
+                                            </p>
+                                            <h2 class="font-weight-bolder mb-0 mt-1" id="total-books">--</h2>
+                                            <span class="text-success text-sm font-weight-bolder">+3%</span> <span
+                                                class="text-xs text-muted">esta semana</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="metric-icon bg-gradient-primary float-end">
+                                            <i class="fas fa-book"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold text-muted">Lectores
+                                                Activos
+                                            </p>
+                                            <h2 class="font-weight-bolder mb-0 mt-1" id="total-users">--</h2>
+                                            <span class="text-success text-sm font-weight-bolder">+12%</span> <span
+                                                class="text-xs text-muted">nuevos registros</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="metric-icon bg-gradient-success float-end">
+                                            <i class="fas fa-user-graduate"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-4 col-sm-6">
+                        <div class="card">
+                            <div class="card-body p-4">
+                                <div class="row">
+                                    <div class="col-8">
+                                        <div class="numbers">
+                                            <p class="text-sm mb-0 text-uppercase font-weight-bold text-muted">Nuevas
+                                                Solicitudes</p>
+                                            <h2 class="font-weight-bolder mb-0 mt-1" id="pending-requests">--</h2>
+                                            <span class="text-secondary text-sm font-weight-bolder">Pendientes</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-4 text-end">
+                                        <div class="metric-icon bg-gradient-info float-end">
+                                            <i class="fas fa-bell"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory List -->
+            <div class="row mb-5" id="inventory">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center bg-white">
+                            <div class="d-flex align-items-center">
+                                <h6 class="mb-0 font-weight-bold mr-3">Inventario de Libros</h6>
+                                <button class="btn btn-primary btn-sm shadow-sm rounded-pill px-4 fw-bold"
+                                    onclick="AdminPageController.addBook()">
+                                    <i class="fas fa-plus mr-2"></i> Nuevo Libro
+                                </button>
+                            </div>
+                            <div class="search-wrapper">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="adminSearchInput" class="form-control search-input"
+                                    placeholder="Buscar libro..." style="width: 250px;">
+                            </div>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Libro</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Categoría</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Nivel</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-books-table-body">
+                                        <!-- JS Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Users Table -->
+            <div class="row" id="users">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center bg-white">
+                            <h6 class="mb-0 font-weight-bold">Gestión de Usuarios</h6>
+                            <button class="btn btn-sm btn-outline-dark mb-0">Exportar CSV</button>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Usuario & Contacto</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Colegio / Institución</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Teléfono</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Rol</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-users-table-body">
+                                        <!-- JS Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Table (New) -->
+            <div class="row" id="orders" style="display: none;">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center bg-white">
+                            <h6 class="mb-0 font-weight-bold">Historial de Pedidos</h6>
+                            <div class="d-flex">
+                                <span class="badge badge-success mr-2">WhatsApp Web</span>
+                            </div>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ID & Fecha</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Usuario</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Cantidad</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Estado</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-orders-table-body">
+                                        <!-- JS Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Downloads Table (New) -->
+            <div class="row" id="downloads" style="display: none;">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center bg-white">
+                            <h6 class="mb-0 font-weight-bold">Historial de Descargas de Planes</h6>
+                            <button class="btn btn-sm btn-outline-success mb-0"
+                                onclick="AdminPageController.exportDownloadsCSV()">
+                                <i class="fas fa-file-csv mr-1"></i> Exportar CSV
+                            </button>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Fecha & Hora</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Usuario (Lead)</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Institución / Rol</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Teléfono</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Libro</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Material</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-downloads-table-body">
+                                        <!-- JS Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Essays Table (New) -->
+            <div class="row" id="essays" style="display: none;">
+                <div class="col-12">
+                    <div class="card mb-4">
+                        <div class="card-header pb-0 d-flex justify-content-between align-items-center bg-white">
+                            <h6 class="mb-0 font-weight-bold">Aportes y Ensayos de Estudiantes</h6>
+                            <div class="d-flex">
+                                <span class="badge badge-info mr-2">Revisión Pendiente</span>
+                            </div>
+                        </div>
+                        <div class="card-body px-0 pt-0 pb-2">
+                            <div class="table-responsive p-0">
+                                <table class="table align-items-center mb-0">
+                                    <thead>
+                                        <tr>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Fecha & Autor</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Materia / Nivel</th>
+                                            <th
+                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                Archivo</th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                Estado</th>
+                                            <th class="text-secondary opacity-7"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="admin-essays-table-body">
+                                        <!-- JS Content -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer pt-3  ">
+                <div class="container-fluid">
+                    <div class="row align-items-center justify-content-lg-between">
+                        <div class="col-lg-6 mb-lg-0 mb-4">
+                            <div class="copyright text-center text-sm text-muted text-lg-start">
+                                © 2025 <span class="font-weight-bold">Aranduka</span> | Dev by BTI026
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+
+    </main>
+
+    <!-- Core Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- App Logic -->
+    <script src="js/main.js"></script>
+    <!-- Admin Specific Logic -->
+    <script src="js/admin.js?v=2"></script>
+</body>
+
+</html>

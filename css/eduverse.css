@@ -1,0 +1,287 @@
+ /* =========================================
+   EDUVERSE DYNAMIC THEME ENGINE
+   ========================================= */
+
+ :root {
+     /* DEFAULT THEME (Fallback) */
+     --ev-font-main: 'Inter', sans-serif;
+     --ev-font-heading: 'Playfair Display', serif;
+     --ev-radius: 16px;
+     --ev-primary: #0c647c;
+     --ev-accent: #f59e0b;
+     --ev-bg-overlay: rgba(255, 255, 255, 0.85);
+     --ev-glass-blur: 20px;
+     --ev-border-width: 1px;
+     --ev-border-color: rgba(255, 255, 255, 0.2);
+     --ev-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+     --ev-text-color: #1e293b;
+     --ev-modal-bg: rgba(255, 255, 255, 0.75);
+ }
+
+ /* =========================================
+   THEME: GAMIFIED (Primary School)
+   ========================================= */
+ .theme-primary {
+     --ev-font-main: 'Quicksand', sans-serif;
+     --ev-font-heading: 'Montserrat Alternates', sans-serif;
+     --ev-radius: 24px;
+     --ev-primary: #FF6B6B;
+     /* Playful Red/Orange */
+     --ev-accent: #4ECDC4;
+     /* Teal */
+     --ev-bg-overlay: rgba(255, 255, 255, 0.90);
+     /* Lighter, safer feel */
+     --ev-glass-blur: 15px;
+     --ev-border-width: 3px;
+     --ev-border-color: rgba(255, 255, 255, 0.8);
+     --ev-shadow: 8px 8px 0px rgba(0, 0, 0, 0.1);
+     /* Pop/brutalist shadow */
+     --ev-modal-bg: rgba(255, 255, 255, 0.95);
+ }
+
+ /* =========================================
+   THEME: MODERN (Secondary School)
+   ========================================= */
+ .theme-secondary {
+     --ev-font-main: 'Inter', sans-serif;
+     --ev-font-heading: 'Outfit', sans-serif;
+     --ev-radius: 12px;
+     --ev-primary: #6366f1;
+     /* Electric Indigo */
+     --ev-accent: #d946ef;
+     /* Fuchsia */
+     --ev-bg-overlay: rgba(15, 23, 42, 0.8);
+     /* Darker mood */
+     --ev-glass-blur: 30px;
+     /* High tech blur */
+     --ev-border-width: 1px;
+     --ev-border-color: rgba(255, 255, 255, 0.1);
+     --ev-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+     /* Glow effect */
+     --ev-text-color: #f8fafc;
+     /* Light text for dark mode */
+     --ev-modal-bg: rgba(30, 41, 59, 0.7);
+     /* Dark glass */
+ }
+
+ /* =========================================
+   THEME: ACADEMIC (University/Pro)
+   ========================================= */
+ .theme-academic {
+     --ev-font-main: 'Lora', serif;
+     --ev-font-heading: 'EB Garamond', serif;
+     --ev-font-mono: 'Roboto Mono', monospace;
+     --ev-radius: 4px;
+     /* Minimalist */
+     --ev-primary: #1e293b;
+     /* Slate */
+     --ev-accent: #059669;
+     /* Emerald */
+     --ev-bg-overlay: rgba(248, 250, 252, 0.95);
+     /* Paper-like */
+     --ev-glass-blur: 10px;
+     --ev-border-width: 1px;
+     --ev-border-color: #e2e8f0;
+     --ev-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+     --ev-text-color: #0f172a;
+     --ev-modal-bg: #ffffff;
+ }
+
+
+ /* =========================================
+   DYNAMIC COMPONENTS
+   ========================================= */
+
+ /* The Modal Overlay (Background Handler) */
+ .eduverse-modal-overlay {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     z-index: 10000;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     /* Dynamic Background Image set via JS */
+     background-size: cover;
+     background-position: center;
+     transition: opacity 0.5s ease;
+ }
+
+ /* The "Focus Layer" (Blur + Color Overlay) */
+ .eduverse-focus-layer {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     backdrop-filter: blur(var(--ev-glass-blur));
+     background-color: var(--ev-bg-overlay);
+     z-index: -1;
+     transition: all 0.5s ease;
+ }
+
+ /* The Glassmorphism Reading Container */
+ .eduverse-glass-panel {
+     width: 90%;
+     max-width: 1000px;
+     height: 85vh;
+     background: var(--ev-modal-bg);
+     border-radius: var(--ev-radius);
+     border: var(--ev-border-width) solid var(--ev-border-color);
+     box-shadow: var(--ev-shadow);
+     display: flex;
+     flex-direction: column;
+     overflow: hidden;
+     position: relative;
+     color: var(--ev-text-color);
+     font-family: var(--ev-font-main);
+     transition: all 0.5s ease;
+     animation: ev-float-in 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+ }
+
+ .theme-secondary .eduverse-glass-panel {
+     backdrop-filter: blur(20px);
+     /* Enhance glass effect for modern */
+ }
+
+ /* Non-structural Glass Utility for Legacy Modal */
+ .ev-glass-style {
+     background: var(--ev-modal-bg) !important;
+     border-radius: var(--ev-radius) !important;
+     border: var(--ev-border-width) solid var(--ev-border-color) !important;
+     box-shadow: var(--ev-shadow) !important;
+     color: var(--ev-text-color);
+     font-family: var(--ev-font-main);
+     transition: all 0.5s ease;
+ }
+
+ /* Allow header to blend in if needed */
+ .ev-glass-style .modal-header-actions {
+     background-color: rgba(255, 255, 255, 0.8) !important;
+     backdrop-filter: blur(10px);
+     border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+ }
+
+ /* Header Area */
+ .ev-header {
+     padding: 2rem;
+     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+     display: flex;
+     justify-content: space-between;
+     align-items: flex-start;
+ }
+
+ .theme-secondary .ev-header {
+     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+ }
+
+ .ev-title {
+     font-family: var(--ev-font-heading);
+     font-size: 2.5rem;
+     margin: 0;
+     line-height: 1.2;
+     background: linear-gradient(135deg, var(--ev-primary), var(--ev-accent));
+     -webkit-background-clip: text;
+     background-clip: text;
+     -webkit-text-fill-color: transparent;
+ }
+
+ /* Content Area */
+ .ev-content {
+     flex: 1;
+     overflow-y: auto;
+     padding: 2rem;
+     display: grid;
+     grid-template-columns: 2fr 1fr;
+     gap: 2rem;
+ }
+
+ @media (max-width: 768px) {
+     .ev-content {
+         grid-template-columns: 1fr;
+     }
+ }
+
+ /* Buttons */
+ .ev-btn {
+     padding: 0.8rem 1.5rem;
+     border-radius: var(--ev-radius);
+     border: none;
+     font-family: var(--ev-font-main);
+     font-weight: 700;
+     cursor: pointer;
+     transition: all 0.3s ease;
+     display: inline-flex;
+     align-items: center;
+     gap: 0.5rem;
+ }
+
+ .ev-btn-primary {
+     background: var(--ev-primary);
+     color: white;
+ }
+
+ .ev-btn-primary:hover {
+     filter: brightness(1.1);
+     transform: translateY(-2px);
+ }
+
+ /* Animations */
+ @keyframes ev-float-in {
+     0% {
+         opacity: 0;
+         transform: translateY(50px) scale(0.95);
+     }
+
+     100% {
+         opacity: 1;
+         transform: translateY(0) scale(1);
+     }
+ }
+
+ /* Custom Scrollbar */
+ .ev-content::-webkit-scrollbar {
+     width: 8px;
+ }
+
+ .ev-content::-webkit-scrollbar-track {
+     background: transparent;
+ }
+
+ .ev-content::-webkit-scrollbar-thumb {
+     background-color: var(--ev-primary);
+     border-radius: 20px;
+     border: 3px solid transparent;
+     background-clip: content-box;
+ }
+
+ /* =========================================
+   CONTEXTUAL CURSORS (SVG Data URIs)
+   ========================================= */
+
+ /* Default / Generic */
+ .cursor-theme-default .ev-content {
+     cursor: auto;
+ }
+
+ /* History / Literature / Humanities (Quill/Scroll) */
+ .cursor-theme-academic .ev-content {
+     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewport='0 0 100 100' style='fill:black;font-size:20px;'><text y='50%'>📜</text></svg>") 16 16, auto;
+ }
+
+ /* Math / Science / Tech (Rocket/Ruler) */
+ .cursor-theme-tech .ev-content {
+     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewport='0 0 100 100' style='fill:black;font-size:20px;'><text y='50%'>🚀</text></svg>") 16 16, auto;
+ }
+
+ /* Nature / Health (Leaf) */
+ .cursor-theme-nature .ev-content {
+     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewport='0 0 100 100' style='fill:black;font-size:20px;'><text y='50%'>🌿</text></svg>") 16 16, auto;
+ }
+
+ /* Arts (Palette) */
+ .cursor-theme-art .ev-content {
+     cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewport='0 0 100 100' style='fill:black;font-size:20px;'><text y='50%'>🎨</text></svg>") 16 16, auto;
+ }
