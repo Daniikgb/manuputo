@@ -717,35 +717,57 @@ document.addEventListener('DOMContentLoaded', function () {
         let navHtml = `
             <div class="container-fluid pt-2 px-0 text-center">
                 <style>
-                    /* Mobile Horizontal Scroll Styles */
+                    /* Mobile Grid Layout Styles (User Request: Mixed Layout) */
                     .mobile-scroll-nav {
-                        display: flex;
-                        flex-wrap: nowrap;
-                        overflow-x: auto;
-                        -webkit-overflow-scrolling: touch;
-                        padding-bottom: 5px; /* Hide scrollbar visual impact */
-                        margin-bottom: 10px;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
                         gap: 10px;
-                        justify-content: flex-start;
-                        padding-left: 15px; /* Left padding for first item */
-                        padding-right: 15px;
+                        margin-bottom: 10px;
+                        padding: 0 0px; 
+                        width: 100%;
                     }
-                    /* Scrollbar hiding */
-                    .mobile-scroll-nav::-webkit-scrollbar {
-                        display: none;
+
+                    /* 1. Educacion Inicial -> Full Width */
+                    .mobile-scroll-nav > button:nth-child(1) {
+                        grid-column: span 2;
                     }
-                    /* Desktop Override */
+
+                    /* 2. Primer Ciclo -> Auto (1 col) */
+                    /* 3. Segundo Ciclo -> Auto (1 col) */
+                    /* These naturally fall into the 2nd row side-by-side */
+
+                    /* 4. Tercer Ciclo & Rest -> Full Width */
+                    .mobile-scroll-nav > button:nth-child(n+4) {
+                        grid-column: span 2;
+                    }
+
+                    /* Ensure buttons look good in grid */
+                    .mobile-scroll-nav .btn {
+                        width: 100%; 
+                        white-space: normal; /* Allow text wrapping */
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        min-height: 40px; 
+                        padding: 0.2rem 0.5rem;
+                        font-size: 0.9rem;
+                    }
+
+                    /* Desktop Override: Revert to standard flex/centering */
                     @media (min-width: 768px) {
                         .mobile-scroll-nav {
+                            display: flex;
                             flex-wrap: wrap;
                             justify-content: center;
-                            overflow-x: visible;
-                            padding-left: 0;
-                            padding-right: 0;
+                            gap: 10px; 
+                        }
+                        .mobile-scroll-nav > button {
+                            width: auto !important; /* Auto width on desktop */
+                            grid-column: auto !important;
                         }
                     }
                 </style>
-                <div class="mobile-scroll-nav">
+                <div class="mobile-scroll-nav" id="levels-filter-wrapper">
                     <button class="btn ${filterLevel === 'all' ? 'btn-dark shadow' : 'btn-light border'} rounded-pill px-4 py-2 font-weight-bold flex-shrink-0" 
                        onclick="renderGradesFilter('all')" 
                        style="transition: all 0.2s; ${filterLevel !== 'all' ? 'color: #555;' : ''}; white-space: nowrap;">
