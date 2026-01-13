@@ -892,12 +892,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 <div class="row grade-grid-container">
                     ${grades.map(g => `
-                        <div class="col-12 col-sm-6 col-md-4 mb-4">
-                            <div class="grade-card" onclick="renderBooks('filter', '${g}')" role="button" tabindex="0" onkeypress="if(event.key==='Enter') renderBooks('filter', '${g}')">
-                                <div class="icon-box">
+                        <div class="col-6 col-md-4 mb-4">
+                            <div class="grade-card shadow-sm p-3 bg-white rounded text-center h-100 d-flex flex-column align-items-center justify-content-center border" onclick="renderBooks('filter', '${g}')" role="button" tabindex="0" onkeypress="if(event.key==='Enter') renderBooks('filter', '${g}')" style="cursor: pointer; transition: transform 0.2s;">
+                                <div class="icon-box mb-2 text-primary" style="font-size: 2rem;">
                                     <i class="fas fa-graduation-cap"></i>
                                 </div>
-                                <h5>${g}</h5>
+                                <h6 class="font-weight-bold text-dark mb-0" style="word-wrap: break-word;">${g}</h6>
                             </div>
                         </div>
                     `).join('')}
@@ -1430,82 +1430,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const currentUser = JSON.parse(localStorage.getItem('aranduka_currentUser'));
         const isLoggedIn = currentUser && currentUser.name;
 
-        const m = document.getElementById('quickViewModal');
-
-        // 1. Historial Inteligente
-        const isModalOpen = m.classList.contains('active');
-        if (!isModalOpen) window.history.pushState({ modalOpen: true }, "");
-        else window.history.replaceState({ modalOpen: true }, "");
-
-        // 2. Llenar Datos
-        const modalImg = document.getElementById('modalBookImage');
-        modalImg.src = book.image;
-        modalImg.onerror = function () {
-            this.onerror = null;
-            this.src = 'img/portadas/default_cover.png';
-        };
-
-        document.getElementById('modalBookTitle').innerText = book.title;
-        document.getElementById('modalBookDescription').innerText = book.description || 'Sin descripción disponible.';
-
-        // Metadata - Llenar Datos (Pills)
-        if (document.getElementById('modalBookAuthor')) document.getElementById('modalBookAuthor').innerText = book.author || 'Editorial Aranduka';
-        // Year removed per user request
-
-        if (document.getElementById('modalBookGenre')) {
-            const catDisplay = Array.isArray(book.category) ? book.category.join(', ').replace(/-/g, ' ').toUpperCase() : (book.category ? book.category.replace(/-/g, ' ').toUpperCase() : 'EDUCATIVO');
-            document.getElementById('modalBookGenre').innerText = catDisplay;
-        }
-        if (document.getElementById('modalBookLevelBadge')) document.getElementById('modalBookLevelBadge').innerText = book.level ? book.level.replace(/-/g, ' ').toUpperCase() : 'GENERAL';
-
-        // 3. Botones (Asistente y Visor)
-        // 3. Botones (Asistente y Visor)
-        const btnCreate = document.getElementById('btnCreateClass');
-        if (btnCreate) {
-            if (isLoggedIn) {
-                btnCreate.style.display = ''; // Reset display
-                const newBtn = btnCreate.cloneNode(true);
-                btnCreate.parentNode.replaceChild(newBtn, btnCreate);
-                newBtn.onclick = () => AiWizardController.open(book); // Abre menu principal
-            } else {
-                btnCreate.style.display = 'none'; // Hide if guest
-            }
-        }
-
-        // "Proyectar" - ELIMINADO (Lógica removida)
-
-        const btnRead = document.getElementById('btnDownloadResources');
-        if (btnRead) {
-            if (isLoggedIn) {
-                btnRead.style.display = ''; // Reset display
-                const newBtn = btnRead.cloneNode(true);
-                btnRead.parentNode.replaceChild(newBtn, btnRead);
-                newBtn.onclick = () => showPdfViewer(book);
-            } else {
-                btnRead.style.display = 'none'; // Hide if guest
-            }
-        }
-
-        // 4. Mostrar
-        // 4. Mostrar con Transición EduVerse
-        document.body.style.overflow = 'hidden';
-        m.style.display = 'flex';
-        // Force reflow
-        m.offsetHeight;
-        m.style.opacity = '1';
-        m.classList.add('active');
-
-        // 5. Aplicar Tema EduVerse
-        EduVerseThemeController.applyTheme(book);
-
-        // 5. Botones de Planes (Nuevo)
-        // 5. Botones de Planes (Nuevo) - SOLO LOGGED IN
-        // 5. BOTONES DE PLANES (Dinámicos y PÚBLICOS - User Request)
-        // Eliminamos la lógica anterior que buscaba IDs inexistentes y la restricción de login
-        const planContainer = document.getElementById('planButtonsContainer');
-        if (planContainer) planContainer.remove();
-
-
         // Define processDownload at the top level of openBookModal scope so it can be reused
         const processDownload = (url, typeName) => {
             // Encode URL to handle spaces and special characters for the REQUEST
@@ -1603,6 +1527,77 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         };
+
+        const m = document.getElementById('quickViewModal');
+
+        // 1. Historial Inteligente
+        const isModalOpen = m.classList.contains('active');
+        if (!isModalOpen) window.history.pushState({ modalOpen: true }, "");
+        else window.history.replaceState({ modalOpen: true }, "");
+
+        // 2. Llenar Datos
+        const modalImg = document.getElementById('modalBookImage');
+        modalImg.src = book.image;
+        modalImg.onerror = function () {
+            this.onerror = null;
+            this.src = 'img/portadas/default_cover.png';
+        };
+
+        document.getElementById('modalBookTitle').innerText = book.title;
+        document.getElementById('modalBookDescription').innerText = book.description || 'Sin descripción disponible.';
+
+        // Metadata - Llenar Datos (Pills)
+        if (document.getElementById('modalBookAuthor')) document.getElementById('modalBookAuthor').innerText = book.author || 'Editorial Aranduka';
+        // Year removed per user request
+
+        if (document.getElementById('modalBookGenre')) {
+            const catDisplay = Array.isArray(book.category) ? book.category.join(', ').replace(/-/g, ' ').toUpperCase() : (book.category ? book.category.replace(/-/g, ' ').toUpperCase() : 'EDUCATIVO');
+            document.getElementById('modalBookGenre').innerText = catDisplay;
+        }
+        if (document.getElementById('modalBookLevelBadge')) document.getElementById('modalBookLevelBadge').innerText = book.level ? book.level.replace(/-/g, ' ').toUpperCase() : 'GENERAL';
+
+        // 3. Botones (Ver Resumen y Descargar PDF)
+        const btnSummary = document.getElementById('btnShowSummary');
+        // Summary button is always active, no logic needed unless we want to hide it
+
+        const btnDownload = document.getElementById('btnDownloadPdfDirect');
+        if (btnDownload) {
+            // Clone to remove old listeners
+            const newBtn = btnDownload.cloneNode(true);
+            btnDownload.parentNode.replaceChild(newBtn, btnDownload);
+
+            if (isLoggedIn) {
+                newBtn.onclick = () => {
+                    processDownload(book.file, "Libro Completo");
+                };
+            } else {
+                newBtn.onclick = () => {
+                    $('#authRequiredModal').modal('show');
+                };
+            }
+        }
+
+        // 4. Mostrar
+        // 4. Mostrar con Transición EduVerse
+        document.body.style.overflow = 'hidden';
+        m.style.display = 'flex';
+        // Force reflow
+        m.offsetHeight;
+        m.style.opacity = '1';
+        m.classList.add('active');
+
+        // 5. Aplicar Tema EduVerse
+        EduVerseThemeController.applyTheme(book);
+
+        // 5. Botones de Planes (Nuevo)
+        // 5. Botones de Planes (Nuevo) - SOLO LOGGED IN
+        // 5. BOTONES DE PLANES (Dinámicos y PÚBLICOS - User Request)
+        // Eliminamos la lógica anterior que buscaba IDs inexistentes y la restricción de login
+        const planContainer = document.getElementById('planButtonsContainer');
+        if (planContainer) planContainer.remove();
+
+
+
 
         if (book.planAnual || book.planDiario) {
             const planDiv = document.createElement('div');
