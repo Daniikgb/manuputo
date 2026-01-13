@@ -701,6 +701,77 @@ document.addEventListener('DOMContentLoaded', function () {
             </div>`;
     }
 
+
+    // Renderizado de Grilla de Grados (Filtro Dinámico) - User Request
+    window.renderGradesFilter = function (filterLevel = 'all') {
+        const navContainer = document.getElementById('levels-navbar');
+        // We no longer use gridContainer, we use books-container via renderBooks
+
+        if (!navContainer) return;
+
+        // 2. Render Secondary Filter Bar (Pills Style)
+        const levels = Object.keys(educationLevels);
+        navContainer.style.display = 'block'; // Ensure visible
+
+        // Diseño Mejorado de Botones - Adaptación Móvil (Horizontal Scroll)
+        let navHtml = `
+            <div class="container-fluid pt-2 px-0 text-center">
+                <style>
+                    /* Mobile Horizontal Scroll Styles */
+                    .mobile-scroll-nav {
+                        display: flex;
+                        flex-wrap: nowrap;
+                        overflow-x: auto;
+                        -webkit-overflow-scrolling: touch;
+                        padding-bottom: 5px; /* Hide scrollbar visual impact */
+                        margin-bottom: 10px;
+                        gap: 10px;
+                        justify-content: flex-start;
+                        padding-left: 15px; /* Left padding for first item */
+                        padding-right: 15px;
+                    }
+                    /* Scrollbar hiding */
+                    .mobile-scroll-nav::-webkit-scrollbar {
+                        display: none;
+                    }
+                    /* Desktop Override */
+                    @media (min-width: 768px) {
+                        .mobile-scroll-nav {
+                            flex-wrap: wrap;
+                            justify-content: center;
+                            overflow-x: visible;
+                            padding-left: 0;
+                            padding-right: 0;
+                        }
+                    }
+                </style>
+                <div class="mobile-scroll-nav">
+                    <button class="btn ${filterLevel === 'all' ? 'btn-dark shadow' : 'btn-light border'} rounded-pill px-4 py-2 font-weight-bold flex-shrink-0" 
+                       onclick="renderGradesFilter('all')" 
+                       style="transition: all 0.2s; ${filterLevel !== 'all' ? 'color: #555;' : ''}; white-space: nowrap;">
+                       Todos
+                    </button>
+                    ${levels.map(lvl => `
+                        <button class="btn ${filterLevel === lvl ? 'btn-dark shadow' : 'btn-light border'} rounded-pill px-4 py-2 font-weight-bold flex-shrink-0" 
+                           onclick="renderGradesFilter('${lvl}')"
+                           style="transition: all 0.2s; ${filterLevel !== lvl ? 'color: #555;' : ''}; white-space: nowrap;">
+                           ${lvl.replace(/-/g, ' ').toUpperCase()}
+                        </button>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+        navContainer.innerHTML = navHtml;
+
+        // 3. Render Books Directly (User Request: "Solo los libros")
+        if (filterLevel === 'all') {
+            renderBooks('all');
+        } else {
+            // New: Filter by Cycle Logic in renderBooks
+            renderBooks('filter', filterLevel);
+        }
+    };
+
     // Renderizado Principal
     window.renderBooks = function (filterType, filterValue, shouldScroll = true) {
         const container = elements.booksContainer;
@@ -774,6 +845,11 @@ document.addEventListener('DOMContentLoaded', function () {
             if (elements.introTitle) elements.introTitle.innerText = `Resultados: "${filterValue}"`;
         } else if (filterType === 'filter') {
             const target = appNormalize(filterValue);
+
+            // Check if filterValue is a Cycle Key (Level Group)
+            const cycleKey = Object.keys(educationLevels).find(k => k === filterValue || appNormalize(k) === target);
+            const cycleGrades = cycleKey ? educationLevels[cycleKey] : null;
+
             filtered = books.filter(b => {
                 const bLevel = appNormalize(b.level);
 
@@ -782,22 +858,42 @@ document.addEventListener('DOMContentLoaded', function () {
                     ? b.category.map(c => appNormalize(c))
                     : [appNormalize(b.category)];
 
-                return bLevel === target ||
+                // Match Logic updated for Cycle support
+                const isDirectMatch = bLevel === target ||
                     categories.includes(target) ||
                     bLevel.includes(target) ||
                     target.includes(bLevel);
+
+                // If it's a Cycle Filter, match if book level is in the cycle's grades
+                let isCycleMatch = false;
+                if (cycleGrades) {
+                    // cycleGrades e.g. ["1° Grado", ...]
+                    // book.level e.g. "1-grado"
+                    // We normalize check
+                    isCycleMatch = cycleGrades.some(g => appNormalize(g) === bLevel);
+                }
+
+                return isDirectMatch || isCycleMatch;
             });
+
             if (elements.introTitle) elements.introTitle.innerText = filterValue.replace(/-/g, ' ').toUpperCase();
 
             // Si el filtro es un Grado Específico, mostrar la barra de navegación de Ciclo
-            const cycleKey = Object.keys(educationLevels).find(k => educationLevels[k].includes(filterValue));
-            if (cycleKey) {
-                renderCycleNav(cycleKey, filterValue);
+            // SOLO si NO estamos en el modo "Niveles y Grados" (que ya tiene su propia barra)
+            // Check if we are in 'secciones' tab
+            const activeTab = document.querySelector('.tab-btn.active');
+            if (activeTab && activeTab.dataset.target !== 'secciones') {
+                const cycleKeyForNav = Object.keys(educationLevels).find(k => educationLevels[k].includes(filterValue));
+                if (cycleKeyForNav) {
+                    renderCycleNav(cycleKeyForNav, filterValue);
+                } else {
+                    removeCycleNav();
+                }
             } else {
+                // En modo 'secciones', no queremos la barra secundaria duplicada
                 removeCycleNav();
             }
         }
-
         updateBreadcrumbs(filterType, filterValue);
 
         if (filtered.length === 0) {
@@ -1426,9 +1522,23 @@ document.addEventListener('DOMContentLoaded', function () {
         const book = books.find(b => b.id === id);
         if (!book) return;
 
+        // Clear Static Containers FIRST to prevent accumulation/duplicates
+        const staticPlans = document.getElementById('staticPlansContainer');
+        if (staticPlans) {
+            staticPlans.innerHTML = '';
+            staticPlans.style.display = 'none';
+        }
+        const staticOrder = document.getElementById('staticOrderContainer');
+        if (staticOrder) {
+            staticOrder.innerHTML = '';
+        }
+
         // Check Login Status (User Request: Hide features if not logged in)
         const currentUser = JSON.parse(localStorage.getItem('aranduka_currentUser'));
         const isLoggedIn = currentUser && currentUser.name;
+
+        // Define isInitial helper
+        const isInitial = book.level === 'educacion-inicial' || (book.category && book.category.includes('inicial'));
 
         // Define processDownload at the top level of openBookModal scope so it can be reused
         const processDownload = (url, typeName) => {
@@ -1556,25 +1666,26 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (document.getElementById('modalBookLevelBadge')) document.getElementById('modalBookLevelBadge').innerText = book.level ? book.level.replace(/-/g, ' ').toUpperCase() : 'GENERAL';
 
-        // 3. Botones (Ver Resumen y Descargar PDF)
-        const btnSummary = document.getElementById('btnShowSummary');
-        // Summary button is always active, no logic needed unless we want to hide it
+        // 3. Botones (Ver Resumen y Descargar PDF) - REMOVED PER USER REQUEST
+        // "SOLO EL BOTON DE PEDIDO Y DE LOS PLANES"
 
-        const btnDownload = document.getElementById('btnDownloadPdfDirect');
-        if (btnDownload) {
-            // Clone to remove old listeners
-            const newBtn = btnDownload.cloneNode(true);
-            btnDownload.parentNode.replaceChild(newBtn, btnDownload);
+        // window.orderCurrentBook logic is inline in the HTML onclick or a helper function
+        // We can define the helper here or attached to window.
+        window.currentBookTitleForOrder = book.title;
 
-            if (isLoggedIn) {
-                newBtn.onclick = () => {
-                    processDownload(book.file, "Libro Completo");
-                };
-            } else {
-                newBtn.onclick = () => {
-                    $('#authRequiredModal').modal('show');
-                };
-            }
+        // Removed isInitial check for hiding buttons as they are gone globally now.
+
+        /* 
+         * Logic for "Hacer Pedido"
+         * We update the onclick of the new #btnOrderBook if it exists, 
+         * or relies on the global variable we just set.
+         */
+        const btnOrder = document.getElementById('btnOrderBook');
+        if (btnOrder) {
+            btnOrder.onclick = function () {
+                const text = encodeURIComponent(`Hola, me interesa pedir el libro: ${book.title}`);
+                window.open(`https://wa.me/595994675219?text=${text}`, '_blank');
+            };
         }
 
         // 4. Mostrar
@@ -1599,7 +1710,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-        if (book.planAnual || book.planDiario) {
+        if ((book.planAnual || book.planDiario) && !isInitial) {
             const planDiv = document.createElement('div');
             planDiv.id = 'planButtonsContainer';
             planDiv.className = 'mt-3';
@@ -1615,9 +1726,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (book.planAnual) {
                 buttonsHtml += `
-                    <div class="${book.planDiario ? 'col-6 pr-1' : 'col-12'}">
-                        <button id="btnDownloadAnual" class="btn btn-outline-primary btn-block shadow-sm" style="font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            <i class="fas fa-calendar-alt mr-1"></i> Plan Anual
+                    <div class="col-12 mb-2">
+                        <button id="btnDownloadAnual" class="btn btn-outline-primary btn-block shadow-sm text-left px-3" style="font-size: 0.9rem;">
+                            <i class="fas fa-calendar-alt mr-2"></i> Plan Anual
                         </button>
                     </div>`;
             }
@@ -1625,9 +1736,9 @@ document.addEventListener('DOMContentLoaded', function () {
             if (book.planDiario) {
                 const label = book.planDiarioLabel || "Plan Diario";
                 buttonsHtml += `
-                    <div class="${book.planAnual ? 'col-6 pl-1' : 'col-12'}">
-                         <button id="btnDownloadDiario" class="btn btn-outline-info btn-block shadow-sm" style="font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            <i class="fas fa-clipboard-list mr-1"></i> ${label}
+                    <div class="col-12 mb-2">
+                         <button id="btnDownloadDiario" class="btn btn-outline-info btn-block shadow-sm text-left px-3" style="font-size: 0.9rem;">
+                            <i class="fas fa-clipboard-list mr-2"></i> ${label}
                         </button>
                     </div>`;
             }
@@ -1635,24 +1746,28 @@ document.addEventListener('DOMContentLoaded', function () {
             if (book.planDiario2) {
                 const label2 = book.planDiario2Label || "Plan Diario 2";
                 buttonsHtml += `
-                    <div class="col-12 mt-2">
-                         <button id="btnDownloadDiario2" class="btn btn-outline-success btn-block shadow-sm" style="font-size: 0.85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                            <i class="fas fa-clipboard-check mr-1"></i> ${label2}
+                    <div class="col-12 mb-2">
+                         <button id="btnDownloadDiario2" class="btn btn-outline-success btn-block shadow-sm text-left px-3" style="font-size: 0.9rem;">
+                            <i class="fas fa-clipboard-check mr-2"></i> ${label2}
                         </button>
                     </div>`;
             }
 
             buttonsHtml += `</div>`;
-            planDiv.innerHTML = buttonsHtml;
 
-            // Insertar después del contenedor de pedido (si existe) o descripción
-            const orderEl = document.getElementById('orderContainer');
-            const descEl = document.getElementById('modalBookDescription');
-
-            if (orderEl && orderEl.parentNode) {
-                orderEl.parentNode.insertBefore(planDiv, orderEl.nextSibling);
-            } else if (descEl && descEl.parentNode) {
-                descEl.parentNode.insertBefore(planDiv, descEl.nextSibling);
+            // ROBUST STATIC INSERTION FOR PLANS
+            const staticPlans = document.getElementById('staticPlansContainer');
+            if (staticPlans) {
+                staticPlans.innerHTML = buttonsHtml;
+                staticPlans.style.display = 'block'; // Ensure visible
+                staticPlans.classList.add('mt-3', 'pt-3', 'border-top'); // Add styling here
+            } else {
+                // Fallback
+                if (orderEl && orderEl.parentNode) {
+                    const div = document.createElement('div');
+                    div.innerHTML = buttonsHtml;
+                    orderEl.parentNode.insertBefore(div, orderEl);
+                }
             }
 
             // Logic to download specific file
@@ -1698,20 +1813,32 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             projectsHtml += '</div>';
-            projectsDiv.innerHTML = projectsHtml;
+            // projectsDiv.innerHTML = projectsHtml; // Removed old dynamic div creation
 
-            // Insertar después de la fila de botones de planes
-            const planRowEl = document.getElementById('planButtonsContainer'); // Corregido ID
-            const orderEl = document.getElementById('orderContainer');
-            const descEl = document.getElementById('modalBookDescription');
-
-            // Logic to insert: Prefer after plans, then orders, then description
-            if (planRowEl && planRowEl.parentNode) {
-                planRowEl.parentNode.insertBefore(projectsDiv, planRowEl.nextSibling);
-            } else if (orderEl && orderEl.parentNode) {
-                orderEl.parentNode.insertBefore(projectsDiv, orderEl.nextSibling);
-            } else if (descEl && descEl.parentNode) {
-                descEl.parentNode.insertBefore(projectsDiv, descEl.nextSibling);
+            // ROBUST STATIC INSERTION FOR PROJECTS (Initial Education)
+            const staticPlans = document.getElementById('staticPlansContainer');
+            if (staticPlans) {
+                // Determine if we append or overwrite. 
+                // Usually a book has EITHER plans OR projects. 
+                // But just in case, if content exists, we append.
+                if (staticPlans.innerHTML.trim() !== '') {
+                    const div = document.createElement('div');
+                    div.className = 'mt-3 pt-3 border-top';
+                    div.innerHTML = projectsHtml;
+                    staticPlans.appendChild(div);
+                } else {
+                    staticPlans.innerHTML = projectsHtml;
+                    staticPlans.style.display = 'block';
+                    staticPlans.classList.add('mt-3', 'pt-3', 'border-top');
+                }
+            } else {
+                // Fallback
+                const orderEl = document.getElementById('orderContainer');
+                if (orderEl && orderEl.parentNode) {
+                    const div = document.createElement('div');
+                    div.innerHTML = projectsHtml;
+                    orderEl.parentNode.insertBefore(div, orderEl);
+                }
             }
 
             // Bind events asynchronously
@@ -1740,20 +1867,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 <i class="fab fa-whatsapp mr-2"></i> Realizar Pedido Físico (Este Libro)
             </h6>
             <div class="d-flex align-items-center gap-2">
-                <input type="number" id="orderQty" class="form-control" value="1" min="1" style="width: 80px;" placeholder="Cant.">
-                <button id="btnSendOrder" class="btn btn-success font-weight-bold flex-grow-1">
-                    <i class="fas fa-shopping-cart mr-2"></i> Pedir por WhatsApp
+                <!-- Improved Quantity Selector -->
+                <div class="input-group" style="width: 140px;">
+                    <div class="input-group-prepend">
+                        <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('orderQty').stepDown()">-</button>
+                    </div>
+                    <input type="number" id="orderQty" class="form-control text-center font-weight-bold" value="1" min="1" readonly style="background: white;">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" onclick="document.getElementById('orderQty').stepUp()">+</button>
+                    </div>
+                </div>
+                
+                <button id="btnSendOrder" class="btn btn-success font-weight-bold flex-grow-1 shadow-sm">
+                    <i class="fas fa-shopping-cart mr-2"></i> Pedir
                 </button>
             </div>
             <small class="text-muted mt-1 d-block">Te enviará a nuestro WhatsApp de Ventas.</small>
         `;
 
         // Insert logic
-        // Buscamos donde insertar. Lo ideal es antes de los botones de accion principal o despues de la descripcion
-        // Insertaremos después de la descripción para que sea muy visible
-        const descEl = document.getElementById('modalBookDescription');
-        if (descEl && descEl.parentNode) {
-            descEl.parentNode.insertBefore(orderDiv, descEl.nextSibling);
+        // Insert logic - SIMPLIFIED        // Insert logic - ROBUST STATIC CONTAINER APPROACH
+        const staticContainer = document.getElementById('staticOrderContainer');
+        if (staticContainer) {
+            staticContainer.innerHTML = ''; // Clear previous
+            staticContainer.appendChild(orderDiv);
+        } else {
+            // Absolute fallback if HTML was not updated
+            const mb = document.querySelector('.modal-body');
+            if (mb) mb.appendChild(orderDiv);
         }
 
         // Event Listener para el botón de pedido
@@ -1906,13 +2047,22 @@ document.addEventListener('DOMContentLoaded', function () {
             // Prevenir comportamiento de enlace #
             if (filterCard.tagName === 'A') e.preventDefault();
 
+            // USER REQUEST: Always show Grade Grid for Levels (Cycles)
             if (filterCard.dataset.level) {
+                console.log("Navegando a grilla de grados para:", filterCard.dataset.level);
                 showGradeGrid(filterCard.dataset.level);
             } else if (filterCard.dataset.category) {
                 renderBooks('filter', filterCard.dataset.category);
 
-                // Si estamos en movil, cerrar el menu de materias si fuera necesario (opcional)
-                // O simplemente hacer scroll (ya lo hace renderBooks)
+                // UX: Scroll suave a resultados
+                const container = document.getElementById('books-container');
+                if (container) {
+                    setTimeout(() => {
+                        const yOffset = -80;
+                        const y = container.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }, 100);
+                }
             }
         }
     });
@@ -2071,8 +2221,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (document.getElementById(target)) document.getElementById(target).classList.add('active');
 
-            if (target === 'favoritos') renderBooks('favorites', null, false);
-            else renderBooks('all', null, false);
+            if (target === 'secciones') {
+                renderGradesFilter('all');
+            } else if (target === 'favoritos') {
+                renderBooks('favorites', null, false);
+            } else {
+                renderBooks('all', null, false);
+            }
 
             // Scroll suave y "no tanto" (mantiene los tabs visibles)
             const section = document.getElementById('materiales-section');
@@ -2230,7 +2385,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         <div class="list-group-item d-flex align-items-center justify-content-between p-3 bulk-row">
                             <div class="d-flex align-items-center" style="max-width: 70%;">
                                 <div class="position-relative">
-                                    <img src="${book.image}" class="rounded shadow-sm mr-3" style="width: 50px; height: 70px; object-fit: cover; border: 1px solid #eee;">
+                                    <img src="${book.image}" class="rounded shadow-sm mr-3" style="width: 100px; height: 140px; object-fit: contain; background: #fff; border: 1px solid #eee;">
                                 </div>
                                 <div>
                                     <h6 class="mb-1 font-weight-bold" style="color: #2D3748; font-size: 0.95rem;">${book.title}</h6>
