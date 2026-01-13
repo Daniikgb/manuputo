@@ -779,25 +779,70 @@
 
 
 
-        /* Mobile Optimization for Filter Cards */
+        /* Mobile Optimization for Filter Cards & Dashboard */
         @media (max-width: 768px) {
-            .card-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1.5rem;
-                margin-bottom: 2rem;
+
+            /* TABS: Grid System for Mobile */
+            .dashboard-tabs {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                /* 2 Columnas */
+                gap: 10px !important;
+                padding: 10px;
+                width: 100%;
+                margin: 0 auto 1.5rem;
             }
 
+            .tab-btn {
+                width: 100%;
+                /* Fill Grid Cell */
+                height: 110px;
+                /* Reduced Height */
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+
+            .tab-btn i {
+                font-size: 1.5rem;
+                width: 40px;
+                height: 40px;
+                margin-bottom: 0.5rem;
+            }
+
+            /* GRADE GRID: Fix Horizontal Cut-off */
+            /* Ensure it wraps or uses grid */
+            .grade-grid-container {
+                display: flex;
+                flex-wrap: wrap;
+                /* Force wrap */
+                margin-right: -10px;
+                margin-left: -10px;
+            }
+
+            .grade-grid-container .col-12 {
+                /* On verys small screens, stack. On normal mobile, maybe 2 cols? */
+                /* Let's keep it stacked (col-12) for readability or force 2 cols if user wants density */
+                /* For now, ensuring it WRAPS is the key fix for "cut off" */
+                padding-left: 10px;
+                padding-right: 10px;
+            }
+
+            .card-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                padding: 0 0.5rem;
+            }
 
             .filter-card {
-                padding: 1.5rem 1rem;
-                min-height: 140px;
+                padding: 1rem;
+                min-height: 120px;
             }
 
             .filter-card i {
-                font-size: 2rem;
-                width: 60px;
-                height: 60px;
-                margin-bottom: 1rem;
+                font-size: 1.8rem;
+                width: 50px;
+                height: 50px;
+                margin-bottom: 0.8rem;
             }
 
             .filter-card span {
