@@ -2580,201 +2580,224 @@
             animation: fadeInRow 0.3s ease forwards;
         }
 
-        /* Desktop Adjustments */
-        @media (min-width: 992px) {
-            .single-block-modal {
-                position: relative;
-                width: 100%;
-                height: 100%;
-                max-width: 980px;
-                /* Increased from 950px */
-                max-height: 85vh;
-                margin: 2rem auto;
-                border-radius: 12px;
-                box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
-                overflow: hidden;
-                display: flex;
-                flex-direction: column;
+        /* Mobile Fixes & Optimizations */
+        @media (max-width: 991px) {
+
+            /* 1. Prevent Contact Dropdown Clipping */
+            .nav-item-contactos .dropdown-menu {
+                left: auto !important;
+                right: 0 !important;
+                position: absolute !important;
+                width: 280px !important;
+                /* Fixed width to prevent overflow */
+                max-width: 90vw !important;
+                transform: translateX(0) !important;
             }
 
-            .modal-scroll-container {
-                padding-bottom: 0;
-                overflow-y: auto;
+            /* 2. Fix "Horrible" Mobile Modal */
+
+            /* Reset modal container styles */
+            .single-block-modal {
+                max-height: 100% !important;
+                border-radius: 0 !important;
+                overflow-y: auto !important;
+                background: white;
+                /* Ensure clean background */
             }
 
             #quickViewModal {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 0;
-                background: rgba(0, 0, 0, 0.6);
+                padding: 0 !important;
+                /* Full screen feel */
+                align-items: flex-start !important;
+                /* Start from top */
             }
 
-            /* HIDE SCROLL INDICATOR ON DESKTOP */
-            .scroll-indicator {
-                display: none !important;
-            }
-
-            /* --- LAYOUT STRUCTURE (Desktop) --- */
+            /* Optimize Body Layout */
             .modal-body-content {
-                display: flex;
-                flex-direction: row;
-                padding: 3rem;
-                align-items: flex-start;
-                min-height: 400px;
+                flex-direction: column !important;
+                padding: 1.5rem !important;
+                /* Reduce padding significantly */
             }
 
             .modal-column-left {
-                width: 35%;
+                width: 100% !important;
+                padding: 0 0 1rem 0 !important;
+                border-right: none !important;
+                background: transparent !important;
+                margin-bottom: 1rem;
+            }
+
+            /* Resize huge mobile image */
+            .modal-column-left #modalBookImage {
+                max-height: 250px !important;
+                /* Limit height */
+                width: auto !important;
+                max-width: 150px !important;
+                /* Limit width */
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+            }
+
+            /* Hide heavy visual specs on mobile if cluttered */
+            .modal-visual-specs {
+                display: none !important;
+            }
+
+            /* Typography adjustments */
+            #modalBookTitle {
+                font-size: 1.5rem !important;
+                text-align: center;
+                margin-bottom: 0.5rem !important;
+            }
+
+            #modalBookAuthor,
+            #modalBookSubtitle {
+                text-align: center;
+                font-size: 0.9rem !important;
+            }
+
+            /* Center buttons */
+            .modal-column-right {
+                width: 100% !important;
+                padding: 0 !important;
+            }
+
+            #orderContainer,
+            #staticOrderContainer,
+            #staticPlansContainer {
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                padding: 0 0 2rem 0;
-                background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-                border-right: 1px solid #f0f3f7;
-            }
-
-            .modal-column-left #modalBookImage {
-                width: auto !important;
-                max-width: 100% !important;
-                height: auto !important;
-                max-height: 500px !important;
-                object-fit: contain;
-                margin-bottom: 1rem;
-                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            }
-
-            .modal-book-cover-container {
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 width: 100%;
             }
 
-            /* Decorative Specs below the cover */
-            .modal-visual-specs {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                width: 260px;
-                margin-top: 2rem;
-            }
+        }
 
-            .spec-badge {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-                background: rgba(255, 255, 255, 0.8);
-                padding: 12px 16px;
-                border-radius: 16px;
-                border: 1px solid rgba(0, 0, 0, 0.03);
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                backdrop-filter: blur(10px);
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-            }
+        align-items: center;
+        width: 100%;
+        }
 
-            .spec-badge:hover {
-                transform: translateX(8px);
-                background: white;
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-                border-color: var(--primary-color);
-            }
+        /* Decorative Specs below the cover */
+        .modal-visual-specs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 260px;
+            margin-top: 2rem;
+        }
 
-            .spec-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 1rem;
-                flex-shrink: 0;
-            }
+        .spec-badge {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 12px 16px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+        }
 
-            .bg-soft-blue {
-                background: #e3f2fd;
-                color: #1565c0;
-            }
+        .spec-badge:hover {
+            transform: translateX(8px);
+            background: white;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border-color: var(--primary-color);
+        }
 
-            .bg-soft-purple {
-                background: #f3e5f5;
-                color: #7b1fa2;
-            }
+        .spec-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
 
-            .bg-soft-gold {
-                background: #fff8e1;
-                color: #f57f17;
-            }
+        .bg-soft-blue {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
 
-            .spec-badge span {
-                font-size: 0.8rem;
-                font-weight: 800;
-                color: #2d3748;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-            }
+        .bg-soft-purple {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
 
-            .modal-book-cover-container {
-                width: fit-content !important;
-                max-width: 90%;
-                flex-shrink: 0;
-                box-shadow: none !important;
-                border-radius: 4px;
-                border: 2px solid var(--primary-color);
-                padding: 8px;
-                background: white;
-                transform: none !important;
-                margin: 0 auto;
-            }
+        .bg-soft-gold {
+            background: #fff8e1;
+            color: #f57f17;
+        }
 
-            .modal-book-cover-container img {
-                border-radius: 0;
-                box-shadow: none;
-                width: 100% !important;
-                /* FORCE fit to container */
-                height: auto !important;
-                max-width: 100% !important;
-                display: block;
-            }
+        .spec-badge span {
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #2d3748;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-            .modal-column-right {
-                width: 65%;
-                /* Reverted to 65% */
-                padding: 0 0 0 3rem;
-                /* Left padding */
-                text-align: left;
-                /* Left align everything */
-            }
+        .modal-book-cover-container {
+            width: fit-content !important;
+            max-width: 90%;
+            flex-shrink: 0;
+            box-shadow: none !important;
+            border-radius: 4px;
+            border: 2px solid var(--primary-color);
+            padding: 8px;
+            background: white;
+            transform: none !important;
+            margin: 0 auto;
+        }
 
-            /* Desktop Typography */
-            #modalBookTitle {
-                text-align: left !important;
-                font-size: 2.5rem !important;
-                margin-top: 0 !important;
-                margin-bottom: 20px !important;
-                color: var(--primary-color) !important;
-            }
+        .modal-book-cover-container img {
+            border-radius: 0;
+            box-shadow: none;
+            width: 100% !important;
+            /* FORCE fit to container */
+            height: auto !important;
+            max-width: 100% !important;
+            display: block;
+        }
 
-            #modalBookDescription {
-                text-align: left !important;
-                font-size: 1.1rem !important;
-            }
+        .modal-column-right {
+            width: 65%;
+            /* Reverted to 65% */
+            padding: 0 0 0 3rem;
+            /* Left padding */
+            text-align: left;
+            /* Left align everything */
+        }
 
-            /* Hide inline actions on desktop (handled by footer) */
-            .modal-inline-actions {
-                display: none !important;
-                /* Double check hiding */
-            }
+        /* Desktop Typography */
+        #modalBookTitle {
+            text-align: left !important;
+            font-size: 2.5rem !important;
+            margin-top: 0 !important;
+            margin-bottom: 20px !important;
+            color: var(--primary-color) !important;
+        }
 
-            /* Remove Mobile Header Sticky behavior if it conflicts, 
+        #modalBookDescription {
+            text-align: left !important;
+            font-size: 1.1rem !important;
+        }
+
+        /* Hide inline actions on desktop (handled by footer) */
+        .modal-inline-actions {
+            display: none !important;
+            /* Double check hiding */
+        }
+
+        /* Remove Mobile Header Sticky behavior if it conflicts, 
                but we likely want it to look like a dialog header */
-            .modal-header-actions {
-                position: relative !important;
-                /* Inside the card */
-                background-color: var(--primary-color) !important;
-                border-bottom: none !important;
-            }
+        .modal-header-actions {
+            position: relative !important;
+            /* Inside the card */
+            background-color: var(--primary-color) !important;
+            border-bottom: none !important;
+        }
         }
 
         /* FORCE MODALS ON TOP */
