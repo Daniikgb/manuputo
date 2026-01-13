@@ -2671,133 +2671,196 @@
 
         }
 
-        align-items: center;
-        width: 100%;
-        }
+        /* Desktop Adjustments (Restored) */
+        @media (min-width: 992px) {
+            .single-block-modal {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                max-width: 980px;
+                max-height: 85vh;
+                margin: 2rem auto;
+                border-radius: 12px;
+                box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+                overflow: hidden;
+                display: flex;
+                flex-direction: column;
+            }
 
-        /* Decorative Specs below the cover */
-        .modal-visual-specs {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            width: 260px;
-            margin-top: 2rem;
-        }
+            .modal-scroll-container {
+                padding-bottom: 0;
+                overflow-y: auto;
+            }
 
-        .spec-badge {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 12px 16px;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.03);
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
-        }
+            #quickViewModal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0;
+                background: rgba(0, 0, 0, 0.6);
+            }
 
-        .spec-badge:hover {
-            transform: translateX(8px);
-            background: white;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-            border-color: var(--primary-color);
-        }
+            .scroll-indicator {
+                display: none !important;
+            }
 
-        .spec-icon {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            flex-shrink: 0;
-        }
+            .modal-body-content {
+                display: flex;
+                flex-direction: row;
+                padding: 3rem;
+                align-items: flex-start;
+                min-height: 400px;
+            }
 
-        .bg-soft-blue {
-            background: #e3f2fd;
-            color: #1565c0;
-        }
+            .modal-column-left {
+                width: 35%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                padding: 0 0 2rem 0;
+                background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+                border-right: 1px solid #f0f3f7;
+            }
 
-        .bg-soft-purple {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
+            .modal-column-left #modalBookImage {
+                width: auto !important;
+                max-width: 100% !important;
+                height: auto !important;
+                max-height: 500px !important;
+                object-fit: contain;
+                margin-bottom: 1rem;
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
 
-        .bg-soft-gold {
-            background: #fff8e1;
-            color: #f57f17;
-        }
+            .modal-book-cover-container {
+                display: flex;
+                justify-content: center;
+            }
 
-        .spec-badge span {
-            font-size: 0.8rem;
-            font-weight: 800;
-            color: #2d3748;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+            /* Decorative Specs below the cover */
+            .modal-visual-specs {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                width: 260px;
+                margin-top: 2rem;
+            }
 
-        .modal-book-cover-container {
-            width: fit-content !important;
-            max-width: 90%;
-            flex-shrink: 0;
-            box-shadow: none !important;
-            border-radius: 4px;
-            border: 2px solid var(--primary-color);
-            padding: 8px;
-            background: white;
-            transform: none !important;
-            margin: 0 auto;
-        }
+            .spec-badge {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                background: rgba(255, 255, 255, 0.8);
+                padding: 12px 16px;
+                border-radius: 16px;
+                border: 1px solid rgba(0, 0, 0, 0.03);
+                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            }
 
-        .modal-book-cover-container img {
-            border-radius: 0;
-            box-shadow: none;
-            width: 100% !important;
-            /* FORCE fit to container */
-            height: auto !important;
-            max-width: 100% !important;
-            display: block;
-        }
+            .spec-badge:hover {
+                transform: translateX(8px);
+                background: white;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                border-color: var(--primary-color);
+            }
 
-        .modal-column-right {
-            width: 65%;
-            /* Reverted to 65% */
-            padding: 0 0 0 3rem;
-            /* Left padding */
-            text-align: left;
-            /* Left align everything */
-        }
+            .spec-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 1rem;
+                flex-shrink: 0;
+            }
 
-        /* Desktop Typography */
-        #modalBookTitle {
-            text-align: left !important;
-            font-size: 2.5rem !important;
-            margin-top: 0 !important;
-            margin-bottom: 20px !important;
-            color: var(--primary-color) !important;
-        }
+            .bg-soft-blue {
+                background: #e3f2fd;
+                color: #1565c0;
+            }
 
-        #modalBookDescription {
-            text-align: left !important;
-            font-size: 1.1rem !important;
-        }
+            .bg-soft-purple {
+                background: #f3e5f5;
+                color: #7b1fa2;
+            }
 
-        /* Hide inline actions on desktop (handled by footer) */
-        .modal-inline-actions {
-            display: none !important;
-            /* Double check hiding */
-        }
+            .bg-soft-gold {
+                background: #fff8e1;
+                color: #f57f17;
+            }
 
-        /* Remove Mobile Header Sticky behavior if it conflicts, 
+            .spec-badge span {
+                font-size: 0.8rem;
+                font-weight: 800;
+                color: #2d3748;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .modal-book-cover-container {
+                width: fit-content !important;
+                max-width: 90%;
+                flex-shrink: 0;
+                box-shadow: none !important;
+                border-radius: 4px;
+                border: 2px solid var(--primary-color);
+                padding: 8px;
+                background: white;
+                transform: none !important;
+                margin: 0 auto;
+            }
+
+            .modal-book-cover-container img {
+                border-radius: 0;
+                box-shadow: none;
+                width: 100% !important;
+                /* FORCE fit to container */
+                height: auto !important;
+                max-width: 100% !important;
+                display: block;
+            }
+
+            .modal-column-right {
+                width: 65%;
+                /* Reverted to 65% */
+                padding: 0 0 0 3rem;
+                /* Left padding */
+                text-align: left;
+                /* Left align everything */
+            }
+
+            /* Desktop Typography */
+            #modalBookTitle {
+                text-align: left !important;
+                font-size: 2.5rem !important;
+                margin-top: 0 !important;
+                margin-bottom: 20px !important;
+                color: var(--primary-color) !important;
+            }
+
+            #modalBookDescription {
+                text-align: left !important;
+                font-size: 1.1rem !important;
+            }
+
+            /* Hide inline actions on desktop (handled by footer) */
+            .modal-inline-actions {
+                display: none !important;
+                /* Double check hiding */
+            }
+
+            /* Remove Mobile Header Sticky behavior if it conflicts, 
                but we likely want it to look like a dialog header */
-        .modal-header-actions {
-            position: relative !important;
-            /* Inside the card */
-            background-color: var(--primary-color) !important;
-            border-bottom: none !important;
-        }
+            .modal-header-actions {
+                position: relative !important;
+                /* Inside the card */
+                background-color: var(--primary-color) !important;
+                border-bottom: none !important;
+            }
         }
 
         /* FORCE MODALS ON TOP */
