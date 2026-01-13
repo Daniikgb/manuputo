@@ -3357,6 +3357,7 @@
         /* MOBILE BOOK MODAL REDESIGN */
         @media (max-width: 768px) {
 
+            /* --- MOBILE MODAL REDESIGN: 2 COLS + ROWS --- */
             /* Force Column Layout */
             #quickViewModal .modal-content-custom {
                 flex-direction: column !important;
@@ -3365,89 +3366,109 @@
                 border-radius: 0 !important;
             }
 
-            /* Main Content Area */
+            /* Main Grid Container */
             #quickViewModal .modal-body-content {
-                display: flex;
-                flex-direction: column;
-                padding: 1rem !important;
+                display: grid !important;
+                /* 140px fixed for image, 1fr for rest */
+                grid-template-columns: 140px 1fr !important;
+                grid-template-areas:
+                    "img title"
+                    "img meta"
+                    "desc desc"
+                    "actions actions";
+                gap: 15px !important;
+                padding: 15px !important;
                 padding-bottom: 200px !important;
-                /* Space for buttons if fixed or just extra scroll */
+                align-items: start !important;
             }
 
-            /* 1. Image Column (Top) */
+            /* 1. Image Column (Left) */
             #quickViewModal .modal-column-left {
+                grid-area: img;
                 width: 100% !important;
-                border-right: none !important;
+                border: none !important;
                 padding: 0 !important;
-                margin-bottom: 1.5rem;
-                display: flex;
-                justify-content: center;
+                margin: 0 !important;
+                display: block !important;
+                /* Reset flex */
             }
 
             #quickViewModal .modal-book-cover-container {
-                width: 100%;
-                max-width: 180px;
-                /* Limit size */
-                margin: 0 auto;
-                text-align: center;
-                padding: 10px;
-                background: white;
-                border-radius: 20px;
-                /* Blue border requested */
-                border: 2px solid var(--primary-color);
-                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+                width: 100% !important;
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 5px !important;
+                background: transparent !important;
+                border: none !important;
+                box-shadow: none !important;
             }
 
             #quickViewModal .modal-book-cover-container img {
-                max-height: 250px !important;
-                object-fit: contain;
-                border-radius: 12px;
-            }
-
-            /* 2. Info Column (Bottom) */
-            #quickViewModal .modal-column-right {
                 width: 100% !important;
-                padding: 0 !important;
-                text-align: center !important;
-                overflow: visible !important;
-                /* Let content flow */
+                height: auto !important;
+                max-height: 200px !important;
+                object-fit: contain !important;
+                border-radius: 8px !important;
             }
 
-            /* Centered Text Elements */
+            /* 2. Info Side (Right -> Flattened) */
+            #quickViewModal .modal-column-right {
+                display: contents !important;
+                /* Children participate in Grid */
+            }
+
+            /* Title */
             #quickViewModal #modalBookTitle {
-                font-size: 1.8rem !important;
-                text-align: center !important;
+                grid-area: title;
+                font-size: 1.3rem !important;
+                text-align: left !important;
+                margin: 0 !important;
+                line-height: 1.2 !important;
+                align-self: end !important;
+                color: var(--primary-color) !important;
+            }
+
+            /* Meta Pills */
+            #quickViewModal .modal-column-right .d-flex.flex-wrap {
+                grid-area: meta;
+                justify-content: flex-start !important;
+                align-self: start !important;
+                gap: 5px !important;
             }
 
             #quickViewModal .badge {
-                margin: 0 auto;
-                /* Center pills if they flex */
+                margin: 0 !important;
+                font-size: 0.75rem !important;
+                padding: 5px 10px !important;
             }
 
+            /* Description */
             #quickViewModal #modalBookDescription {
-                text-align: center !important;
+                grid-area: desc;
+                grid-column: 1 / -1 !important;
+                /* Spans full width */
+                text-align: left !important;
                 font-size: 0.95rem !important;
-                padding: 0 0.5rem;
+                padding: 0 !important;
+                margin-top: 10px !important;
             }
 
-            /* Metadata Container Centering */
-            #quickViewModal .modal-column-right .d-flex.flex-wrap {
-                justify-content: center !important;
-            }
-
-            /* Buttons: Stacked & Full Width */
+            /* Actions */
             #quickViewModal .modal-actions-grid {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-                margin-top: 2rem !important;
+                grid-area: actions;
+                grid-column: 1 / -1 !important;
+                /* Spans full width */
+                padding-top: 10px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 10px !important;
+                margin-top: 0 !important;
             }
 
             #quickViewModal .modern-action-btn {
                 width: 100% !important;
                 border-radius: 50px !important;
-                /* Rounds */
-                padding: 1rem !important;
+                padding: 0.8rem !important;
             }
 
             /* Hide desktop spacer */
@@ -3455,15 +3476,100 @@
                 display: none;
             }
 
-            /* Ensure Plan Buttons also stack if visible */
+            /* Plan Buttons */
             #planButtonsRow {
-                margin-top: 10px;
+                grid-column: 1 / -1 !important;
+                width: 100% !important;
+                margin-top: 10px !important;
             }
 
-            #planButtonsRow .col-6 {
-                flex: 0 0 100%;
-                max-width: 100%;
-                margin-bottom: 10px;
+            /* Hide the descriptive label "Descripcion" if present, or let it flow into desc area implicitly? 
+               Wait, H5 label is a sibling. If we use display:contents, H5 becomes a grid item but currently 
+               has no area assignment. It will likely flow into the next available cell.
+               "desc" area is occupied by P.
+               Let's assign H5 to "desc" too? Or make a slot. 
+               Safe bet: Assign H5 label to grid-column 1 / -1 as well.
+            */
+            #quickViewModal .modal-column-right>h5 {
+                grid-column: 1 / -1 !important;
+                text-align: left !important;
+                margin-top: 10px !important;
+                margin-bottom: 5px !important;
+            }
+
+            /* --- FIX: MOBILE GRID LAYOUT FOR BUTTONS/CARDS --- */
+            /* Enforce 2-column grid for Subject and Section Filters */
+            .card-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+                justify-content: center !important;
+            }
+
+            /* Ensure Filter Cards fit in the new 2-col grid */
+            .filter-card {
+                width: 100% !important;
+                min-width: 0 !important;
+                /* Allow shrinking */
+                margin: 0 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                justify-content: center !important;
+                text-align: center !important;
+            }
+
+            /* Enforce 2-column grid for Grade Selection (inside showGradeGrid) */
+            .grade-grid-container {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 15px !important;
+            }
+
+            /* Override bootstrap sizing for grades inside the grid container */
+            .grade-grid-container .col-6,
+            .grade-grid-container .col-md-4 {
+                max-width: 100% !important;
+                flex: none !important;
+                width: auto !important;
+                margin-bottom: 0 !important;
+                /* Gap handles spacing */
+            }
+
+            .grade-card {
+                height: 100% !important;
+                /* Uniform height */
+                width: 100% !important;
+            }
+
+            /* --- FIX: MOBILE HEADER ALIGNMENT --- */
+            /* Move Contact/Login buttons to the right */
+            .header-container {
+                padding: 0 10px !important;
+            }
+
+            .main-nav {
+                margin-left: auto !important;
+                /* Push to right */
+                flex-grow: 0 !important;
+            }
+
+            .main-nav ul {
+                gap: 5px !important;
+                /* Tighten gap on mobile */
+            }
+
+            /* Adjust Search Bar to prevent pushing nav off screen */
+            /* If search bar is too wide, buttons fall off. Let's restrain it */
+            .search-bar {
+                margin: 0 10px !important;
+                max-width: 140px !important;
+                /* Smaller search on mobile */
+            }
+
+            .search-bar input {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.9rem !important;
             }
         }
     </style>
