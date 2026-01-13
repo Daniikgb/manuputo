@@ -3542,34 +3542,83 @@
                 width: 100% !important;
             }
 
-            /* --- FIX: MOBILE HEADER ALIGNMENT --- */
-            /* Move Contact/Login buttons to the right */
+            /* --- MOBILE HEADER REDESIGN v2 --- */
             .header-container {
-                padding: 0 10px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                height: auto !important;
+                padding: 15px 10px !important;
+                align-items: center !important;
             }
 
+            /* 1. Logo Centered */
+            .logo {
+                margin: 0 auto 10px auto !important;
+                order: 1 !important;
+                width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+            }
+
+            .logo img {
+                height: 60px !important;
+                /* Smaller logo for mobile */
+                width: auto !important;
+            }
+
+            /* 2. Nav (Buttons) Centered below Logo */
             .main-nav {
-                margin-left: auto !important;
-                /* Push to right */
+                width: 100% !important;
+                margin: 0 !important;
+                order: 2 !important;
+                justify-content: center !important;
+                margin-bottom: 12px !important;
                 flex-grow: 0 !important;
             }
 
             .main-nav ul {
-                gap: 5px !important;
-                /* Tighten gap on mobile */
+                justify-content: center !important;
+                gap: 15px !important;
+                width: 100% !important;
             }
 
-            /* Adjust Search Bar to prevent pushing nav off screen */
-            /* If search bar is too wide, buttons fall off. Let's restrain it */
+            /* Make buttons slightly smaller or stacked if needed, but side-by-side center is good */
+            .btn-login-nav,
+            .btn-share-nav {
+                padding: 0.5rem 1rem !important;
+                font-size: 0.9rem !important;
+            }
+
+            /* 3. Search Bar Full Width below Buttons */
             .search-bar {
-                margin: 0 10px !important;
-                max-width: 140px !important;
-                /* Smaller search on mobile */
+                order: 3 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                max-width: none !important;
+                flex-grow: 1 !important;
             }
 
             .search-bar input {
-                padding: 0.5rem 1rem !important;
-                font-size: 0.9rem !important;
+                width: 100% !important;
+                padding: 0.7rem 1.2rem !important;
+                border-radius: 50px !important;
+                background: white !important;
+                border: 1px solid #ddd !important;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05) !important;
+            }
+
+            .search-bar button {
+                right: 15px !important;
+            }
+
+            #voiceSearchBtn {
+                right: 50px !important;
+            }
+
+            /* 4. Hide Default Header Shadow/Border if interfering */
+            .main-header {
+                height: auto !important;
+                padding-bottom: 5px !important;
             }
         }
     </style>
@@ -3581,7 +3630,7 @@
     <header class="main-header">
         <div class="header-container">
             <div class="logo">
-                <a href="javascript:void(0)" onclick="hardReset()"><img src="img/portadas/logo aranduka.jpeg"
+                <a href="javascript:void(0)" onclick="hardReset()"><img src="img/portadas/logo%20aranduka.jpeg"
                         alt="Aranduka Logo"></a>
             </div>
 
